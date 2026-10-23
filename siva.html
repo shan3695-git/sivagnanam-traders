@@ -1,0 +1,3623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#6a11cb">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="https://img.freepik.com/premium-vector/st-letter-logo-design-black-background-initial-monogram-letter-st-logo-design-vector-template_634196-1208.jpg">
+  <title>Sivagnanam Traders</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Modern Reset & Global */
+    :root {
+      --primary-color: #007bff;
+      --primary-gradient: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-color: #212529;
+      --text-muted: #6c757d;
+      --border-color: #dee2e6;
+      --shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+      --sidebar-width: 240px;
+      --header-height: 60px;
+    }
+    * { box-sizing: border-box; outline: none; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-color);
+      margin: 0;
+      color: var(--text-color);
+    }
+    /* Header Styling */
+    header {
+      background: var(--card-bg);
+      height: var(--header-height);
+      padding: 0 20px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    header h1 {
+      margin: 0;
+      color: var(--text-color);
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      flex-grow: 1;
+      text-align: center;
+    }
+
+    .datetime-display {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-align: right;
+      font-weight: 500;
+      line-height: 1.2;
+      min-width: 120px;
+    }
+
+    /* Main Layout */
+    .main-wrapper {
+      display: flex;
+      height: calc(100vh - var(--header-height));
+    }
+
+    /* Navigation Tabs */
+    .side-nav {
+      width: var(--sidebar-width);
+      height: 100%;
+      background: var(--card-bg);
+      padding: 20px 10px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 998;
+      transform: translateX(-100%);
+      animation: slideIn 0.5s forwards ease-out;
+    }
+
+    @keyframes slideIn {
+      to { transform: translateX(0); }
+    }
+
+    /* Tab Buttons */
+    .tab-button {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      width: 100%;
+      text-align: left;
+      background-color: transparent;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      position: relative; /* For icon animation */
+      overflow: hidden;
+    }
+    .tab-button i {
+      font-size: 1.1em;
+      width: 20px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .tab-button:hover {
+      background-color: #e9ecef;
+      color: var(--primary-color);
+    }
+    .tab-button:hover i {
+      transform: scale(1.2);
+    }
+    .tab-button.active {
+      background: var(--primary-gradient);
+      color: white;
+      box-shadow: 0 4px 12px rgba(0,123,255,0.2);
+    }
+
+    /* Layout Container */
+    .container {
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 98%;
+    }
+
+    .content-wrapper {
+      flex: 1;
+      overflow-y: auto;
+      height: 100%;
+    }
+
+    /* Card Styling */
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 25px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid var(--border-color);
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: var(--text-color);
+      font-size: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+    .card h3 {
+      color: #4a5568;
+      margin-bottom: 0px;
+      font-size: 1rem;
+    }
+
+    /* Form Elements */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0px;
+    }
+    
+    label {
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: block;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all 0.2s ease-in-out;
+      background-color: #f1f3f5;
+      box-sizing: border-box;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary-color);
+      background-color: var(--card-bg);
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    }
+
+    /* Buttons */
+    button.submit-btn {
+      background: var(--primary-gradient);
+      color: #fff;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+      margin-top: 10px;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(0,123,255,0.2);
+    }
+    button.submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,123,255,0.3);
+    }
+    button.submit-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(0,123,255,0.2);
+    }
+
+    /* Tables */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+    }
+    th {
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      color: #ffffff;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      padding: 16px;
+      text-align: left;      
+      border-bottom: 2px solid var(--border-color);
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-color);
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+    tbody tr:hover {
+      background-color: #e9ecef;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    /* Utilities & Animations */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Sub Tabs */
+    .sub-tabs {
+      display: fit-content;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      background: #f7fafc;
+      padding: 10px;
+      border-radius: 12px;
+    }
+    .sub-tab-button {
+      background: transparent;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .sub-tab-button:hover {
+      color: var(--primary-color);
+      background: #e9ecef;
+    }
+    .sub-tab-button.active {
+      background: var(--primary-color);
+      color: white;
+      box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+    }
+
+    .expenses-dashboard {
+      background: #f3f5f8;
+      border-radius: 20px;
+      padding: 8px 0 0;
+      color: #1f2937;
+    }
+    .expenses-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+      padding: 0 4px 0 2px;
+    }
+    .expenses-header h2 {
+      margin: 0;
+      font-size: clamp(2rem, 2.4vw, 2.8rem);
+      line-height: 1.1;
+      color: #1f2937;
+      border: none;
+      padding: 0;
+    }
+    .expenses-header p {
+      margin: 8px 0 0;
+      color: #6b7280;
+      font-size: 1.05rem;
+    }
+    .expenses-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .expense-btn {
+      border: 1.5px solid #d1d5db;
+      background: #f5f6f8;
+      color: #1f2937;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .expense-btn.primary {
+      background: linear-gradient(135deg, #2d6cdf 0%, #2c5dcb 100%);
+      border-color: #2d6cdf;
+      color: white;
+      box-shadow: 0 8px 18px rgba(45, 108, 223, 0.2);
+    }
+    .expense-btn:hover { transform: translateY(-1px); }
+    .expense-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(180px, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .expense-metric {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 22px 20px 18px;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.03);
+      min-height: 170px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .expense-metric-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 600;
+      color: #4b5563;
+      margin-bottom: 18px;
+    }
+    .metric-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+      color: #2f3a46;
+    }
+    .metric-icon.blue { background: #dfeafc; }
+    .metric-icon.green { background: #dff4eb; }
+    .metric-icon.yellow { background: #f7e8c1; }
+    .metric-icon.pink { background: #f3dfe7; }
+    .expense-metric-value {
+      font-size: clamp(1.8rem, 2vw, 2.5rem);
+      font-weight: 700;
+      color: #111827;
+      line-height: 1.1;
+      margin: 10px 0 0;
+    }
+    .expense-metric-sub {
+      color: #6b7280;
+      font-size: 0.98rem;
+      margin-top: 6px;
+    }
+    .expense-card-note {
+      font-size: 1.05rem;
+      color: #4b5563;
+      font-weight: 500;
+      margin-top: 6px;
+    }
+    .expense-history-box {
+      background: rgba(255,255,255,0.45);
+      border: 1px solid #dfe5ee;
+      border-radius: 20px;
+      padding: 10px 12px 0;
+    }
+    .expense-filters {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      margin: 18px 0 14px;
+      flex-wrap: wrap;
+    }
+    .expense-search {
+      flex: 1;
+      min-width: 220px;
+      max-width: 560px;
+      border: 1px solid #d3d9e3;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 1.04rem;
+      background: rgba(255,255,255,0.7);
+      color: #111827;
+    }
+    .expense-select {
+      min-width: 220px;
+      border: 1px solid #d3d9e3;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 1.04rem;
+      background: rgba(255,255,255,0.7);
+      color: #111827;
+    }
+    .expense-list {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: transparent;
+    }
+    .expense-list th {
+      background: rgba(148, 163, 184, 0.12);
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 18px 16px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .expense-list td {
+      padding: 16px 16px;
+      border-bottom: 1px solid #eceef2;
+      background: rgba(255,255,255,0.2);
+      font-size: 1rem;
+      color: #1f2937;
+      white-space: normal;
+    }
+    .expense-delete-btn {
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 12px;
+      background: #fee2e2;
+      color: #b91c1c;
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .expense-delete-btn:hover {
+      background: #fecaca;
+    }
+    .expense-entry {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .expense-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: #e5eaf6;
+      color: #1f2937;
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+    .expense-name {
+      font-weight: 600;
+      margin: 0 0 2px;
+      font-size: 1.02rem;
+    }
+    .expense-meta {
+      color: #6b7280;
+      margin: 0;
+      font-size: 0.92rem;
+    }
+    .expense-badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: #eaf4ff;
+      color: #0f766e;
+    }
+    .expense-amount {
+      font-weight: 700;
+      color: #d93025;
+      font-size: 1.05rem;
+    }
+    @media (max-width: 900px) {
+      .expense-metrics {
+        grid-template-columns: repeat(2, minmax(180px, 1fr));
+      }
+    }
+    @media (max-width: 620px) {
+      .expense-metrics {
+        grid-template-columns: 1fr;
+      }
+      .expenses-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .expenses-actions {
+        width: 100%;
+      }
+      .expense-btn {
+        flex: 1;
+      }
+      .expense-filters { flex-direction: column; align-items: stretch; }
+      .expense-search, .expense-select { max-width: none; width: 100%; }
+    }
+
+    /* Info Box */
+    .info-box {
+      background: #e7f3ff;
+      border-left: 4px solid var(--primary-color);
+      color: #004085;
+      padding: 15px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+
+    /* Action Buttons */
+    .action-btn {
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s;
+      margin-right: 5px;
+      color: white;
+    }
+    .action-btn:hover { transform: translateY(-1px); }
+    .edit-btn { background-color: #ffc107; }
+    .delete-btn { background-color: #dc3545; }
+
+    /* Popup & Logo Styles */
+    .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: none; justify-content: center; align-items: center; }
+    .popup-content { background: white; padding: 30px; border-radius: 12px; text-align: center; box-shadow: 0 5px 30px rgba(0,0,0,0.3); max-width: 80%; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .popup-content h3 { margin-top: 0; color: #28a745; }
+    .popup-btn { background: #6a11cb; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; margin-top: 15px; font-weight: 600; }
+    @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .expense-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2500;
+      padding: 24px;
+    }
+    .expense-modal-overlay.show {
+      display: flex;
+    }
+    .expense-modal {
+      width: min(100%, 1040px);
+      background: #f1f5f9;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 30px 70px rgba(15, 23, 42, 0.25);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+    .expense-modal-header {
+      background: linear-gradient(90deg, #0f6fb7 0%, #1e88d9 100%);
+      min-height: 86px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 26px 0 30px;
+      color: white;
+    }
+    .expense-modal-header h3 {
+      margin: 0;
+      font-size: clamp(2rem, 2vw, 2.5rem);
+      font-weight: 700;
+      color: white;
+      border: none;
+      padding: 0;
+    }
+    .expense-modal-close {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font-size: 1.9rem;
+      line-height: 1;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      padding: 0;
+    }
+    .expense-modal-body {
+      background: #f6f8fb;
+      padding: 28px 26px 22px;
+    }
+    .expense-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px 28px;
+      margin-bottom: 18px;
+    }
+    .expense-form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .expense-form-field[hidden] {
+      display: none;
+    }
+    .expense-form-field.full {
+      grid-column: 1 / -1;
+    }
+    .expense-form-field label {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+    .expense-form-field label .required {
+      color: #e53935;
+      margin-left: 4px;
+    }
+    .expense-form-field input,
+    .expense-form-field select,
+    .expense-form-field textarea {
+      width: 100%;
+      border: 1.5px solid #a9bfd9;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.3);
+      color: #1f2937;
+      font-size: 1.05rem;
+      padding: 14px 16px;
+      box-shadow: inset 0 0 0 1px rgba(148,163,184,0.15);
+    }
+    .expense-form-field input::placeholder,
+    .expense-form-field textarea::placeholder {
+      color: #7f8da6;
+    }
+    .expense-form-field textarea {
+      min-height: 94px;
+      resize: vertical;
+    }
+    .expense-date-wrap {
+      position: relative;
+    }
+    .expense-date-wrap input {
+      padding-right: 46px;
+    }
+    .expense-date-wrap i {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #334155;
+      pointer-events: none;
+      font-size: 1.3rem;
+    }
+    .expense-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 16px;
+      margin-top: 16px;
+      padding-top: 12px;
+    }
+    .expense-secondary-btn,
+    .expense-primary-btn {
+      border: none;
+      border-radius: 12px;
+      padding: 16px 26px;
+      font-size: 1.18rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .expense-secondary-btn {
+      background: #dfeaf4;
+      color: #1f2937;
+      min-width: 160px;
+    }
+    .expense-primary-btn {
+      background: linear-gradient(135deg, #0c7be0 0%, #1d5dd9 100%);
+      color: white;
+      min-width: 220px;
+      box-shadow: 0 10px 18px rgba(38, 100, 255, 0.22);
+    }
+    .expense-secondary-btn:hover,
+    .expense-primary-btn:hover {
+      transform: translateY(-1px);
+    }
+    @media (max-width: 760px) {
+      .expense-form-grid {
+        grid-template-columns: 1fr;
+      }
+      .expense-modal {
+        width: min(100%, 640px);
+      }
+      .expense-modal-header {
+        min-height: 72px;
+      }
+      .expense-modal-footer {
+        flex-direction: column-reverse;
+      }
+      .expense-secondary-btn,
+      .expense-primary-btn {
+        width: 100%;
+      }
+    }
+
+    .form-header-logos { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 10px; }
+    .form-logo { width: 50px; height: 50px; object-fit: contain; }
+    .stock-logo-container { text-align: center; margin-bottom: 15px; }
+    .stock-logo-img { width: 60px; height: 60px; object-fit: contain; }
+
+    /* Purchase Page Layout */
+    @media (min-width: 992px) {
+      .purchase-container {
+        display: flex;
+        gap: 30px;
+        align-items: flex-start;
+      }
+      .purchase-form-wrapper { flex: 1; min-width: 350px; }
+      .purchase-list-wrapper { flex: 2; margin-top: 0 !important; max-height: calc(100vh - 220px); overflow-y: auto; }
+    }
+
+    /* Grid Form for Sales */
+    .grid-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    .grid-form .form-group { display: flex; flex-direction: column;  }
+    .grid-form .full-width { grid-column: 1/6; }
+    @media (max-width: 768px) { .grid-form { grid-template-columns: 2fr; }
+   }
+   .size1 {
+     display: flex;
+     align-items: right;
+     gap: 10px;
+     margin-left: auto;
+     width: 200px;
+     margin-top: -30px;
+     margin-right: 80px;
+   }
+
+   /* Global Print Styles for integrated printing */
+   @media print {
+     body > *:not(#printableArea) { display: none !important; }
+     #printableArea { display: block !important; position: absolute; top: 0; left: 0; width: 100%; }
+   }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://img.freepik.com/premium-vector/st-letter-logo-design-black-background-initial-monogram-letter-st-logo-design-vector-template_634196-1208.jpg" alt="Logo" style="height: 40px;">
+    <h1>SIVAGNANAM TRADERS</h1>
+    <div id="systemDateTime" class="datetime-display"></div>
+  </header>
+  <div class="main-wrapper">
+    <!-- Side Navigation -->
+    <nav class="side-nav">
+      <button class="tab-button active" onclick="showTab('stock', this)"><i class="fas fa-shopping-cart"></i> Purchase</button> 
+      <button class="tab-button" onclick="showTab('customer', this)"><i class="fas fa-users"></i> Customer Details</button>
+      <button class="tab-button" onclick="showTab('sales', this)"><i class="fas fa-cash-register"></i> Sales</button>
+      <button class="tab-button" onclick="showTab('quickBill', this)"><i class="fas fa-bolt"></i> Quick Bill</button>
+      <button class="tab-button" onclick="showTab('entryDetails', this)"><i class="fas fa-file-invoice"></i> Customer Report</button>
+      <button class="tab-button" onclick="showTab('expenses', this)"><i class="fas fa-wallet"></i> Expenses</button>
+      <button class="tab-button" onclick="showTab('tally', this)"><i class="fas fa-boxes"></i> Stock</button>
+      <button class="tab-button" onclick="showTab('dataOutcome', this)"><i class="fas fa-database"></i> Data Outcome</button>
+    </nav>
+
+    <main class="content-wrapper">
+      <div class="container">
+  <!-- Stock Tab -->
+  <div id="stock" class="tab-content active card">
+    <div class="sub-tabs">
+      <button class="sub-tab-button active" onclick="showStockSubTab('entry', this)">Stock Entry</button>
+      <button class="sub-tab-button" onclick="showStockSubTab('report', this)">Monthly Report</button>
+    </div>
+
+    <div id="stockEntryView">
+      <h3>Stock Entry</h3>
+      <div class="purchase-container">
+        <div class="purchase-form-wrapper">
+          <form>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="cylinderType">Cylinder KG Type:</label>
+            <input type="text" id="cylinderType" name="cylinderType" placeholder="e.g. 14.2 KG" required>
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" placeholder="Enter quantity" required>
+
+            <label for="price">Purchare Price:</label>
+            <input type="number" id="price" name="price" placeholder="Enter price" required>
+
+            <label for="mrp">MRP (Selling Price):</label>
+            <input type="number" id="mrp" name="mrp" placeholder="Enter selling price" required>
+
+            <div style="display:flex; gap:10px;">
+              <button type="submit" class="submit-btn" id="stockSubmitBtn">Add Stock</button>
+              <button type="button" class="submit-btn" id="stockCancelBtn" style="background:#777; display:none;">Cancel</button>
+            </div>
+          </form>
+        </div>
+        <div id="stockList" class="purchase-list-wrapper">
+          <h3>Current Stocks</h3>
+          <div class="table-wrapper">
+          <table id="stockTable">
+            <thead>
+              <tr><th>Date</th><th>Product</th><th>Qty</th><th>Price</th><th>MRP</th><th>Total</th><th>Action</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- Selling Price View (Monthly Report) -->
+    <div id="stockReportView" style="display:none;">
+      <h3 style="text-align: center; margin-bottom: 20px;">Monthly Sales Report</h3>
+      
+      <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; align-items: center; flex-wrap: wrap;">
+        <button id="btnPrevMonth" style="padding: 8px 12px; cursor: pointer;">&laquo; Previous Month</button>
+        <input type="month" id="reportMonthPicker" style="padding: 8px;" />
+        <button id="btnLoadReport" class="submit-btn" style="width:auto; padding: 8px 16px; margin:0; font-size:0.9rem;">Load Report</button>
+      </div>
+      
+      <div id="reportSummary" style="text-align: center; margin-bottom: 15px; font-size: 1.1em; font-weight: bold; color: #2d3748;"></div>
+
+      <div class="table-wrapper">
+      <table id="sellingReportTable">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Type</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- Customer Tab -->
+  <div id="customer" class="tab-content card">
+    <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <label for="custDate" style="margin:0;">Date:</label>
+        <input type="date" id="custDate" name="date" required style="padding:8px; border:1px solid #cbd5e0; border-radius:5px;">
+      </div>
+    </div>
+
+    <div id="customerEntryView" style="display:block;">
+      <div class="purchase-container">
+        <div class="purchase-form-wrapper">
+          <h4 style="margin-top:0; color:#4a5568; border-bottom:2px solid #e2e8f0; padding-bottom:5px; margin-bottom:15px;">New Customer</h4>
+          <form id="customerForm">
+
+            <label for="custName">Customer Name:</label>
+            <input type="text" id="custName" name="name" placeholder="Full name" required>
+
+            <label for="custPhone">Phone Number:</label>
+            <input type="tel" id="custPhone" name="phone" placeholder="Phone number" pattern="[0-9+\-() ]{7,}" required>
+
+            <label for="custAddress">Address:</label>
+            <input type="text" id="custAddress" name="address" placeholder="Street, City, State" required>
+
+            <label for="custgstin">GSTIN</label>
+            <input type="text" id="custgstin" name="GSTIN" placeholder="GSTIN">
+
+            <label for="custDeposit">Deposit Amount</label>
+            <input type="number" id="custDeposit" name="deposit" placeholder="Enter deposit amount">
+
+            <label for="custOldBalance">Old Balance Amount</label>
+            <input type="number" id="custOldBalance" name="old_balance" placeholder="Enter old balance amount">
+
+            <div style="display:flex; gap:10px;">
+              <button type="submit" class="submit-btn" id="customerSubmitBtn">Add Customer</button>
+              <button type="button" class="submit-btn" id="customerCancelBtn" style="background:#777; display:none;">Cancel</button>
+            </div>
+          </form>
+        </div>
+        
+        <div id="customerList" class="purchase-list-wrapper">
+          <div style="padding:15px; margin-top:0; margin-bottom:20px;">
+            <h3 style="margin-top:0; color:#4a5568; border-bottom:2px solid #e2e8f0; padding-bottom:5px; margin-bottom:15px;">Customers</h3>
+            <div class="table-wrapper" style="max-height: 250px; overflow-y: auto;">
+            <table id="customerTable">
+              <thead>
+                <tr><th>Date</th><th>Name</th><th>Phone</th><th>Address</th><th>GSTIN</th><th>Deposit</th><th>Old Balance</th><th>Pending Amount</th><th>Action</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entry Details Tab -->
+  <div id="entryDetails" class="tab-content card">
+    <h2>All Entries Log</h2>
+    <div style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+      <label for="entryDateFilter" style="margin-bottom:0;">Filter by Date:</label>
+      <label for="entryDateFilter" style="margin-bottom:0;">Filter:</label>
+      <input type="date" id="entryDateFilter" style="max-width: 150px; padding: 8px;">
+      <button onclick="document.getElementById('entryDateFilter').value=''; window.renderEntryDetails();" class="action-btn" style="background:#718096; height: 42px; margin:0;">Show All</button>
+    </div>
+    <div class="table-wrapper">
+      <table id="entryDetailsTable">
+        <thead>
+          <tr><th>Date & Time</th><th>Name</th><th>Phone</th><th>Address</th><th>Balance Amount</th><th>Balance Empty</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <button class="submit-btn" style="margin-top: 20px; background: #2d3748;" onclick="printAllEntries()">Print Full Log</button>
+  </div>
+
+  <!-- Stock Tally Tab -->
+  <div id="tally" class="tab-content card">
+    <h2>Cylinder Stock Tally</h2>
+    <div class="table-wrapper">
+      <table id="tallyTable">
+        <thead>
+          <tr>
+            <th>Cylinder Type</th><th>Purchased</th><th>Sales</th><th>Current Full Stock</th><th>Current Empty Stock</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Sales Tab -->
+  <div id="sales" class="tab-content card">
+      <div class="purchase-container">
+        <div class="purchase-form-wrapper">
+          <h3 style="margin-top:0; color:#4a5568;">Sales Entry</h3>
+          <form id="salesForm" class="grid-form">
+           <div class="form-group">
+              <label for="saleDate">Date:</label>
+              <input type="date" id="saleDate" name="date" required>
+            </div>
+
+            <div class="form-group">
+              <label for="saleCustomer">Customer:</label>
+              <input type="text" id="saleCustomer" name="customer" list="customerListOptions" placeholder="Search Name or Mobile" required autocomplete="off">
+              <datalist id="customerListOptions"></datalist>
+              <div id="saleCustDetails" class="info-box" style="display:none;"></div>
+            </div>
+
+            <div class="form-group">
+              <label>Tax Type:</label>
+              <div style="display: flex; gap: 20px; align-items: center; margin-top: 5px;">
+                  <label style="display: flex; align-items: center; gap: 5px; font-weight: normal; font-size: 0.9rem;">
+                      <input type="radio" name="taxType" value="cgsg" checked style="width: auto;"> CGST/SGST
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 5px; font-weight: normal; font-size: 0.9rem;">
+                      <input type="radio" name="taxType" value="igst" style="width: auto;"> IGST
+                  </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="saleCylinderType">Product</label>
+              <select id="saleCylinderType" name="cylinderType" >
+                <option value="">Select Type</option>
+              </select>
+              <div id="saleStockDetails" class="info-box" style="display:none;"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="saleCylinders">Quantity</label>
+              <input type="number" id="saleCylinders" name="cylinders" min="0" placeholder="Enter quantity" >
+            </div>
+
+            <div class="form-group">
+              <label for="saleReturn">Return Empty / Clear Pending:</label>
+              <input type="number" id="saleReturn" name="returnCyl" min="0" placeholder="Enter return quantity">
+            </div>
+
+            <div class="form-group">
+              <label for="salePrice">Price per Cylinder:</label>
+              <input type="number" id="salePrice" name="price" min="0" step="0.01" placeholder="Enter price" >
+            </div>
+
+            <div class="form-group">
+              <label for="saleTotal">Amount:</label>
+              <input type="number" id="saleTotal" name="total" step="0.01">
+            </div>
+
+            <div class="form-group">
+              <label for="salePaid">Paid Amount:</label>
+              <input type="number" id="salePaid" name="paid" min="0" step="0.01" placeholder="Enter paid amount">
+            </div>
+
+            <div class="form-group">
+              <label for="saleBalance">Balance Amount:</label>
+              <input type="number" id="saleBalance" name="balance" readonly>
+            </div>
+
+            <div class="form-group">
+              <label for="saleCylBalance">Net Cylinder Balance:</label>
+              <input type="number" id="saleCylBalance" name="cylBalance" readonly placeholder="Calculated balance">
+            </div>
+
+            <div style="display:flex; gap:10px;" class="full-width">
+              <button type="submit" class="submit-btn" id="saleSubmitBtn">Add Sale</button>
+              <button type="button" class="submit-btn" id="saleCancelBtn" style="background:#777; display:none;">Cancel</button>
+            </div>
+          </form>
+          
+           <div id="salesList" class="card purchase-list-wrapper">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px;">
+            <h3 id="salesListTitle" style="margin:0; color:#4a5568;">Today's Sales</h3>
+            <div style="display:flex; gap:6px;" role="group" aria-label="Filter sales">
+              <button type="button" id="showTodaySalesBtn" class="action-btn" aria-pressed="true" onclick="setSalesView('today')">Today</button>
+              <button type="button" id="showAllSalesBtn" class="action-btn" aria-pressed="false" style="background:#718096;" onclick="setSalesView('all')">All Sales</button>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table id="salesTable">
+              <thead>
+                <tr><th>Date</th><th>Cust ID</th><th>Customer</th><th>Cylinders</th><th>Return Empty</th><th>Price</th><th>Bill Amount</th><th>Paid</th><th>Balance</th><th>Action</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        </div>
+      </div>
+  </div>
+
+  <!-- Quick Bill Tab -->
+    <div id="quickBill" class="tab-content card">
+      <div class="purchase-container">
+        <div class="purchase-form-wrapper">
+          <h3 style="margin-top:0; color:#4a5568;">Quick Bill (No Save)</h3>
+          <form id="quickBillForm" class="grid-form">
+            <div class="form-group">
+              <label>Invoice No:</label>
+              <input type="text" id="qbInvoice" placeholder="Auto-generated" readonly>
+            </div>
+            <div class="form-group">
+              <label>Date:</label>
+              <input type="date" id="qbDate">
+            </div>
+            <div class="form-group">
+              <label>Customer Name:</label>
+              <input type="text" id="qbCustomer" placeholder="Enter Name">
+            </div>
+            <div class="form-group">
+              <label>Phone:</label>
+              <input type="text" id="qbPhone" placeholder="Enter Phone">
+            </div>
+            <div class="form-group">
+              <label>Address:</label>
+              <input type="text" id="qbAddress" placeholder="Enter Address">
+            </div>
+            <div class="form-group">
+              <label>Product / Description:</label>
+              <input type="text" id="qbProduct" placeholder="Product Name">
+            </div>
+            <div class="form-group">
+              <label>Quantity:</label>
+              <input type="number" id="qbQty" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label>Empty Return:</label>
+              <input type="number" id="qbReturn" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label>MRP (per unit, incl. GST):</label>
+              <input type="number" id="qbMrp" placeholder="0.00">
+            </div>
+            <div class="form-group">
+              <label>Taxable Total:</label>
+              <input type="number" id="qbTaxableTotal" readonly>
+            </div>
+            <div class="form-group">
+              <label>GST Amount (18%):</label>
+              <input type="number" id="qbGstAmount" readonly>
+            </div>
+            <div class="form-group">
+              <label>Grand Total (incl. GST):</label>
+              <input type="number" id="qbGrandTotal" readonly style="font-weight: bold; color: var(--primary-color);">
+            </div>
+            <div class="full-width" style="display:flex; gap:10px;">
+              <button type="button" class="submit-btn" onclick="printQuickBill()">Print Bill</button>
+              <button type="button" class="submit-btn" style="background:#718096;" onclick="clearQuickBill()">Clear</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  <!-- Expenses Tab -->
+  <div id="expenses" class="tab-content card expenses-dashboard">
+    <div class="expenses-header">
+      <div>
+        <h2>Expenses</h2>
+        <p>Track and manage your cylinder agency business expenses.</p>
+      </div>
+      <div class="expenses-actions">
+        <button class="expense-btn" type="button" id="resetExpenseFiltersBtn">Reset filters</button>
+        <button class="expense-btn primary" type="button" id="addExpenseBtn">+ Add Expense</button>
+      </div>
+    </div>
+
+    <div class="expense-metrics">
+      <div class="expense-metric">
+        <div class="expense-metric-header">
+          <span>Total Expenses</span>
+          <span class="metric-icon blue"><i class="fas fa-indian-rupee-sign"></i></span>
+        </div>
+        <div class="expense-metric-value" id="totalExpensesValue">₹0</div>
+        <div class="expense-metric-sub">Across all recorded entries</div>
+      </div>
+      <div class="expense-metric">
+        <div class="expense-metric-header">
+          <span>This Month</span>
+          <span class="metric-icon green"><i class="fas fa-calendar-alt"></i></span>
+        </div>
+        <div class="expense-metric-value" id="thisMonthValue">₹0</div>
+        <div class="expense-metric-sub">Current month total</div>
+      </div>
+      <div class="expense-metric">
+        <div class="expense-metric-header">
+          <span>Expense Entries</span>
+          <span class="metric-icon yellow"><i class="fas fa-list-ul"></i></span>
+        </div>
+        <div class="expense-metric-value" id="expenseEntryCount">0</div>
+        <div class="expense-metric-sub">Recorded expenses</div>
+      </div>
+      <div class="expense-metric">
+        <div class="expense-metric-header">
+          <span>Largest Expense</span>
+          <span class="metric-icon pink"><i class="fas fa-arrow-up-right-dots"></i></span>
+        </div>
+        <div class="expense-metric-value" id="largestExpenseValue">₹0</div>
+        <div class="expense-card-note" id="largestExpenseLabel">No expense</div>
+      </div>
+    </div>
+
+    <div class="expense-history-box">
+      <div class="expense-filters">
+        <input type="text" class="expense-search" id="expenseSearchInput" placeholder="Search expenses..." aria-label="Search expenses">
+        <select class="expense-select" id="expenseCategoryFilter" aria-label="Filter by category">
+          <option value="all">All categories</option>
+          <option value="Fuel">Fuel</option>
+          <option value="Cylinder Purchase">Cylinder Purchase</option>
+          <option value="Vehicle Maintenance">Vehicle Maintenance</option>
+          <option value="Electricity Bill">Electricity Bill</option>
+          <option value="Office Rent">Office Rent</option>
+          <option value="Miscellaneous">Miscellaneous</option>
+        </select>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="expense-list" id="expenseTable">
+          <thead>
+            <tr>
+              <th>Expense</th>
+              <th>Category</th>
+              <th>Date</th>
+              <th>Payment Method</th>
+              <th>Amount</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="expenseTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Outcome Tab -->
+  <div id="dataOutcome" class="tab-content card">
+    <h2>Data Outcome & Management</h2>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+      <div style="flex: 1; min-width: 300px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background: #f7fafc;">
+        <h3 style="color: #2d3748; margin-top: 0;">Export Data</h3>
+        <p style="color: #718096; font-size: 0.9rem;">Download a backup of all application data, including expenses, as a JSON file.</p>
+        <button class="submit-btn" onclick="backupData()" style="width: auto; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">Download Backup</button>
+      </div>
+
+      <div style="flex: 1; min-width: 300px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background: #f7fafc;">
+        <h3 style="color: #2d3748; margin-top: 0;">Import Data</h3>
+        <p style="color: #718096; font-size: 0.9rem;">Restore data from a backup file. <span style="color: #e53e3e; font-weight: 600;">Note: This will overwrite existing data.</span></p>
+        <label for="restoreFile" style="display: block; margin-bottom: 10px; font-weight: 500;">Select Backup File:</label>
+        <input type="file" id="restoreFile" accept=".json" onchange="restoreData(this)" style="background: white;">
+      </div>
+    </div>
+  </div>
+
+      </div>
+    </main>
+  </div>
+ 
+  <!-- Hidden Printable Area -->
+  <div id="printableArea" style="display:none;"></div>
+
+  <div id="expenseModalOverlay" class="expense-modal-overlay" aria-hidden="true">
+    <div class="expense-modal" role="dialog" aria-modal="true" aria-labelledby="expenseModalTitle">
+      <div class="expense-modal-header">
+        <h3 id="expenseModalTitle">Add Expense</h3>
+        <button type="button" class="expense-modal-close" id="closeExpenseModalBtn" aria-label="Close expense form">×</button>
+      </div>
+      <div class="expense-modal-body">
+        <form id="expenseForm">
+          <div class="expense-form-grid">
+            <div class="expense-form-field full">
+              <label for="expenseTitleInput">Expense title <span class="required">*</span></label>
+              <input id="expenseTitleInput" name="expenseTitle" type="text" placeholder="e.g. Vehicle fuel, shop rent" required>
+            </div>
+
+            <div class="expense-form-field">
+              <label for="expenseCategoryInput">Category <span class="required">*</span></label>
+              <select id="expenseCategoryInput" name="expenseCategory" required>
+                <option value="">Select category</option>
+                <option value="Fuel">Fuel</option>
+                <option value="Cylinder Purchase">Cylinder Purchase</option>
+                <option value="Vehicle Maintenance">Vehicle Maintenance</option>
+                <option value="Electricity Bill">Electricity Bill</option>
+                <option value="Office Rent">Office Rent</option>
+                <option value="Miscellaneous">Miscellaneous</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="expense-form-field full" id="customExpenseCategoryField" hidden>
+              <label for="customExpenseCategoryInput">Other category <span class="required">*</span></label>
+              <input id="customExpenseCategoryInput" name="customExpenseCategory" type="text" placeholder="Enter category name">
+            </div>
+
+            <div class="expense-form-field">
+              <label for="expenseAmountInput">Amount (₹) <span class="required">*</span></label>
+              <input id="expenseAmountInput" name="expenseAmount" type="number" min="1" step="0.01" placeholder="Enter amount" required>
+            </div>
+
+            <div class="expense-form-field">
+              <label for="expenseDateInput">Date <span class="required">*</span></label>
+              <div class="expense-date-wrap">
+                <input id="expenseDateInput" name="expenseDate" type="date" required>
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+            </div>
+
+            <div class="expense-form-field">
+              <label for="expensePaymentInput">Payment method</label>
+              <select id="expensePaymentInput" name="expensePayment">
+                <option value="Cash">Cash</option>
+                <option value="UPI">UPI</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Cheque">Cheque</option>
+              </select>
+            </div>
+
+            <div class="expense-form-field full">
+              <label for="expenseDescriptionInput">Description / notes</label>
+              <textarea id="expenseDescriptionInput" name="expenseDescription" placeholder="Optional details, bill number, vehicle number, etc."></textarea>
+            </div>
+          </div>
+
+          <div class="expense-modal-footer">
+            <button type="button" class="expense-secondary-btn" id="cancelExpenseModalBtn">Cancel</button>
+            <button type="submit" class="expense-primary-btn">Save Expense</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Popup -->
+  <div id="successPopup" class="popup-overlay">
+    <div class="popup-content">
+      <div style="font-size: 50px; color: #28a745; margin-bottom: 10px;">&#10004;</div>
+      <h3 id="popupTitle">Success!</h3>
+      <p id="popupMessage">Action completed successfully.</p>
+      <button class="popup-btn" onclick="closePopup()">OK</button>
+    </div>
+  </div>
+
+  <script>
+    // Register Service Worker for PWA capabilities
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then(reg => console.log('SW registered')).catch(err => console.log('SW failed', err));
+      });
+    }
+
+    function showTab(tabId, btn) {
+      // Hide all tab contents
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      // Remove active class from all buttons
+      document.querySelectorAll('.side-nav .tab-button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      // Show selected tab
+      document.getElementById(tabId).classList.add('active');
+      // Highlight clicked button
+      btn.classList.add('active');
+
+      if (tabId === 'tally' && window.renderTally) window.renderTally();
+      if (tabId === 'entryDetails' && window.renderEntryDetails) window.renderEntryDetails();
+      if (tabId === 'expenses' && window.renderExpenseDashboard) window.renderExpenseDashboard();
+    }
+
+    function showStockSubTab(viewId, btn) {
+      document.getElementById('stockEntryView').style.display = viewId === 'entry' ? 'block' : 'none';
+      document.getElementById('stockReportView').style.display = viewId === 'report' ? 'block' : 'none';
+      
+      document.querySelectorAll('#stock .sub-tab-button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function showCustomerSubTab(viewId, btn) {
+      document.getElementById('customerEntryView').style.display = viewId === 'entry' ? 'block' : 'none';
+      
+      document.querySelectorAll('#customer .sub-tab-button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    window.showPopup = (title, msg) => {
+      document.getElementById('popupTitle').textContent = title;
+      document.getElementById('popupMessage').textContent = msg;
+      document.getElementById('successPopup').style.display = 'flex';
+    };
+    window.closePopup = () => {
+      document.getElementById('successPopup').style.display = 'none';
+    };
+
+    // add effect for stock and customer forms + persist stocks
+    document.addEventListener('DOMContentLoaded', () => {
+      // System Date Time
+      function updateDateTime() {
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('en-GB').replace(/\//g, '-'); // DD-MM-YYYY
+        const timeStr = now.toLocaleTimeString('en-US', { hour12: true });
+        const el = document.getElementById('systemDateTime');
+        if(el) el.innerHTML = `${timeStr}<br>${dateStr}`;
+      }
+      setInterval(updateDateTime, 1000);
+      updateDateTime();
+
+      const setTodayDate = (id) => {
+        const d = new Date();
+        const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        const el = document.getElementById(id);
+        if (el) el.value = todayStr;
+      };
+      setTodayDate('date');
+      setTodayDate('custDate');
+      setTodayDate('qbDate');
+
+      function parseCurrencyAmount(value) {
+        if (value === null || value === undefined || value === '') return 0;
+        const normalized = String(value).replace(/[₹,\s]/g, '').replace(/[^0-9.-]/g, '');
+        const parsed = Number(normalized);
+        return Number.isFinite(parsed) ? parsed : 0;
+      }
+
+      async function requestExpenseApi(url, options = {}) {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.error || `Expense request failed (${response.status}).`);
+        }
+        return result;
+      }
+
+      function mapExpenseRow(row) {
+        return {
+          id: Number(row.id),
+          name: row.title,
+          label: row.description || '',
+          category: row.category,
+          date: row.date ? String(row.date).split('T')[0] : '',
+          paymentMethod: row.payment_method || 'Cash',
+          amount: parseCurrencyAmount(row.amount)
+        };
+      }
+
+      let expenseEntries = [];
+
+      function formatDate(dateStr) {
+        if (!dateStr) return '';
+        const cleanDate = String(dateStr).split('T')[0];
+        const parts = cleanDate.split('-');
+        if (parts.length === 3) return `${parts[2]}-${parts[1]}-${parts[0]}`;
+        return cleanDate;
+      }
+
+      function formatCurrency(value) {
+        const numericValue = Number(value) || 0;
+        return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(numericValue);
+      }
+
+      function renderExpenseDashboard() {
+        const searchTerm = (document.getElementById('expenseSearchInput')?.value || '').trim().toLowerCase();
+        const categoryFilter = document.getElementById('expenseCategoryFilter')?.value || 'all';
+
+        const filtered = expenseEntries.filter(entry => {
+          const safeEntry = entry || {};
+          const name = String(safeEntry.name || '').toLowerCase();
+          const label = String(safeEntry.label || '').toLowerCase();
+          const category = String(safeEntry.category || '').toLowerCase();
+          const matchesSearch = !searchTerm || name.includes(searchTerm) || label.includes(searchTerm) || category.includes(searchTerm);
+          const matchesCategory = categoryFilter === 'all' || safeEntry.category === categoryFilter;
+          return matchesSearch && matchesCategory;
+        });
+
+        const totalValue = expenseEntries.reduce((sum, item) => sum + parseCurrencyAmount(item?.amount), 0);
+        const currentMonth = new Date().getMonth();
+        const currentYear = new Date().getFullYear();
+        const monthTotal = expenseEntries.filter(item => {
+          if (!item?.date) return false;
+          const date = new Date(String(item.date).split('T')[0]);
+          return !Number.isNaN(date.getTime()) && date.getFullYear() === currentYear && date.getMonth() === currentMonth;
+        }).reduce((sum, item) => sum + parseCurrencyAmount(item?.amount), 0);
+        const largest = expenseEntries.reduce((max, item) => {
+          const currentValue = parseCurrencyAmount(item?.amount);
+          const maxValue = parseCurrencyAmount(max?.amount);
+          return currentValue > maxValue ? item : max;
+        }, expenseEntries[0] || { amount: 0, name: '', category: '' });
+
+        const totalEl = document.getElementById('totalExpensesValue');
+        const monthEl = document.getElementById('thisMonthValue');
+        const countEl = document.getElementById('expenseEntryCount');
+        const largestValueEl = document.getElementById('largestExpenseValue');
+        const largestLabelEl = document.getElementById('largestExpenseLabel');
+
+        if (totalEl) totalEl.textContent = formatCurrency(totalValue);
+        if (monthEl) monthEl.textContent = formatCurrency(monthTotal);
+        if (countEl) countEl.textContent = String(expenseEntries.length);
+        if (largestValueEl) largestValueEl.textContent = formatCurrency(parseCurrencyAmount(largest?.amount));
+        if (largestLabelEl) largestLabelEl.textContent = largest?.name || 'No expense';
+
+        const tbody = document.getElementById('expenseTableBody');
+        if (!tbody) return;
+
+        tbody.innerHTML = '';
+
+        if (filtered.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#666; padding:24px;">No expenses found</td></tr>';
+          return;
+        }
+
+        filtered.forEach((entry) => {
+          const row = document.createElement('tr');
+          const amount = parseCurrencyAmount(entry?.amount);
+          const iconClass = entry.category === 'Fuel' ? 'fa-gas-pump' : entry.category === 'Cylinder Purchase' ? 'fa-cube' : entry.category === 'Vehicle Maintenance' ? 'fa-wrench' : entry.category === 'Electricity Bill' ? 'fa-bolt' : 'fa-building';
+          row.innerHTML = `
+            <td>
+              <div class="expense-entry">
+                <div class="expense-icon"><i class="fas ${iconClass}"></i></div>
+                <div>
+                  <p class="expense-name">${escapeHtml(entry.name)}</p>
+                  <p class="expense-meta">${escapeHtml(entry.label)}</p>
+                </div>
+              </div>
+            </td>
+            <td><span class="expense-badge">${escapeHtml(entry.category)}</span></td>
+            <td>${formatDate(entry.date)}</td>
+            <td>${escapeHtml(entry.paymentMethod)}</td>
+            <td class="expense-amount">${formatCurrency(amount)}</td>
+            <td><button type="button" class="expense-delete-btn" aria-label="Delete ${escapeHtml(entry.name)}">Delete</button></td>
+          `;
+          row.querySelector('.expense-delete-btn').addEventListener('click', () => {
+            if (!confirm(`Delete the expense "${entry.name}"?`)) return;
+            requestExpenseApi(`/api/expenses/${entry.id}`, { method: 'DELETE' })
+              .then(() => {
+                expenseEntries = expenseEntries.filter(expense => expense.id !== entry.id);
+                updateExpenseCategoryFilter();
+                renderExpenseDashboard();
+              })
+              .catch(error => {
+                console.error('Unable to delete expense:', error);
+                showPopup('Database error', error.message);
+              });
+          });
+          tbody.appendChild(row);
+        });
+      }
+
+      const expenseSearchInput = document.getElementById('expenseSearchInput');
+      const expenseCategoryFilter = document.getElementById('expenseCategoryFilter');
+      const addExpenseBtn = document.getElementById('addExpenseBtn');
+      const resetExpenseFiltersBtn = document.getElementById('resetExpenseFiltersBtn');
+      const expenseModalOverlay = document.getElementById('expenseModalOverlay');
+      const expenseForm = document.getElementById('expenseForm');
+      const closeExpenseModalBtn = document.getElementById('closeExpenseModalBtn');
+      const cancelExpenseModalBtn = document.getElementById('cancelExpenseModalBtn');
+      const expenseCategoryInput = document.getElementById('expenseCategoryInput');
+      const customExpenseCategoryField = document.getElementById('customExpenseCategoryField');
+      const customExpenseCategoryInput = document.getElementById('customExpenseCategoryInput');
+
+      function updateExpenseCategoryFilter() {
+        if (!expenseCategoryFilter) return;
+        const selectedCategory = expenseCategoryFilter.value;
+        const categories = [...new Set([
+          'Fuel',
+          'Cylinder Purchase',
+          'Vehicle Maintenance',
+          'Electricity Bill',
+          'Office Rent',
+          'Miscellaneous',
+          ...expenseEntries.map(entry => String(entry?.category || '').trim()).filter(Boolean)
+        ])].sort((first, second) => first.localeCompare(second));
+
+        expenseCategoryFilter.replaceChildren(new Option('All categories', 'all'));
+        categories.forEach(category => expenseCategoryFilter.add(new Option(category, category)));
+        expenseCategoryFilter.value = categories.includes(selectedCategory) ? selectedCategory : 'all';
+      }
+
+      function openExpenseModal() {
+        const expenseDateInput = document.getElementById('expenseDateInput');
+        if (expenseDateInput && !expenseDateInput.value) {
+          const today = new Date();
+          const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+          expenseDateInput.value = todayStr;
+        }
+        if (expenseModalOverlay) {
+          expenseModalOverlay.classList.add('show');
+          expenseModalOverlay.setAttribute('aria-hidden', 'false');
+        }
+      }
+
+      function closeExpenseModal() {
+        if (expenseModalOverlay) {
+          expenseModalOverlay.classList.remove('show');
+          expenseModalOverlay.setAttribute('aria-hidden', 'true');
+        }
+        if (expenseForm) expenseForm.reset();
+        if (customExpenseCategoryField) customExpenseCategoryField.hidden = true;
+        if (customExpenseCategoryInput) customExpenseCategoryInput.required = false;
+      }
+
+      if (expenseCategoryInput) {
+        expenseCategoryInput.addEventListener('change', () => {
+          const isOtherCategory = expenseCategoryInput.value === 'other';
+          if (customExpenseCategoryField) customExpenseCategoryField.hidden = !isOtherCategory;
+          if (customExpenseCategoryInput) {
+            customExpenseCategoryInput.required = isOtherCategory;
+            if (isOtherCategory) customExpenseCategoryInput.focus();
+            else customExpenseCategoryInput.value = '';
+          }
+        });
+      }
+      if (expenseSearchInput) {
+        expenseSearchInput.addEventListener('input', renderExpenseDashboard);
+      }
+      if (expenseCategoryFilter) {
+        expenseCategoryFilter.addEventListener('change', renderExpenseDashboard);
+      }
+      if (resetExpenseFiltersBtn) {
+        resetExpenseFiltersBtn.addEventListener('click', () => {
+          if (expenseSearchInput) expenseSearchInput.value = '';
+          if (expenseCategoryFilter) expenseCategoryFilter.value = 'all';
+          renderExpenseDashboard();
+        });
+      }
+      window.renderExpenseDashboard = renderExpenseDashboard;
+      updateExpenseCategoryFilter();
+      renderExpenseDashboard();
+      if (addExpenseBtn) {
+        addExpenseBtn.addEventListener('click', openExpenseModal);
+      }
+      if (closeExpenseModalBtn) {
+        closeExpenseModalBtn.addEventListener('click', closeExpenseModal);
+      }
+      if (cancelExpenseModalBtn) {
+        cancelExpenseModalBtn.addEventListener('click', closeExpenseModal);
+      }
+      if (expenseModalOverlay) {
+        expenseModalOverlay.addEventListener('click', (event) => {
+          if (event.target === expenseModalOverlay) closeExpenseModal();
+        });
+      }
+      if (expenseForm) {
+        expenseForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const titleInput = document.getElementById('expenseTitleInput');
+          const amountInput = document.getElementById('expenseAmountInput');
+          const dateInput = document.getElementById('expenseDateInput');
+          const paymentInput = document.getElementById('expensePaymentInput');
+          const descriptionInput = document.getElementById('expenseDescriptionInput');
+
+          const title = titleInput?.value?.trim();
+          const category = expenseCategoryInput?.value === 'other'
+            ? customExpenseCategoryInput?.value?.trim()
+            : expenseCategoryInput?.value?.trim();
+          const amount = parseCurrencyAmount(amountInput?.value ?? '');
+          const date = dateInput?.value || new Date().toISOString().slice(0, 10);
+          const paymentMethod = paymentInput?.value?.trim() || 'Cash';
+          const description = descriptionInput?.value?.trim() || '';
+
+          if (!title) {
+            showPopup('Invalid Entry', 'Please enter an expense title.');
+            return;
+          }
+          if (!category) {
+            showPopup('Invalid Entry', 'Please select a category.');
+            return;
+          }
+          if (!Number.isFinite(amount) || amount <= 0) {
+            showPopup('Invalid Entry', 'Please enter a valid positive amount.');
+            return;
+          }
+
+          const newEntry = {
+            name: title,
+            label: description || 'Expense entry',
+            category,
+            date,
+            paymentMethod,
+            amount
+          };
+
+          requestExpenseApi('/api/expenses', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              title: newEntry.name,
+              category: newEntry.category,
+              amount: newEntry.amount,
+              date: newEntry.date,
+              paymentMethod: newEntry.paymentMethod,
+              description: newEntry.label === 'Expense entry' ? '' : newEntry.label
+            })
+          }).then(row => {
+            expenseEntries = [mapExpenseRow(row), ...expenseEntries];
+            updateExpenseCategoryFilter();
+            renderExpenseDashboard();
+            closeExpenseModal();
+            showPopup('Success!', 'Expense added successfully.');
+          }).catch(error => {
+            console.error('Unable to save expense:', error);
+            showPopup('Database error', error.message);
+          });
+        });
+      }
+
+      // --- Stocks: storage + render ---
+      const stockForm = document.querySelector('#stock form');
+      const stockSubmitBtn = document.getElementById('stockSubmitBtn');
+      const stockCancelBtn = document.getElementById('stockCancelBtn');
+      const stockTableBody = document.querySelector('#stockTable tbody');
+      let stocks = [];
+      let stockReturns = [];
+      let editingStockIndex = -1;
+
+      function renderStocks() {
+        if (!stockTableBody) return;
+        stockTableBody.innerHTML = '';
+        if (stocks.length === 0) {
+          stockTableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#666">No stocks added yet</td></tr>';
+          return;
+        }
+        stocks.forEach((s, index) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${formatDate(s.date)}</td><td>${escapeHtml(s.type)}</td><td>${s.qty}</td><td>${s.price}</td><td>${s.mrp || 0}</td><td>${(s.qty * s.price).toFixed(2)}</td><td><button class="action-btn edit-btn" onclick="editStock(${index})">Edit</button> <button class="action-btn delete-btn" onclick="deleteStock(${index})">Delete</button></td>`;
+          stockTableBody.appendChild(tr);
+        });
+      }
+
+      window.editStock = (index) => {
+        const s = stocks[index];
+        editingStockIndex = index;
+        stockForm.date.value = s.date;
+        stockForm.cylinderType.value = s.type;
+        stockForm.quantity.value = s.qty;
+        stockForm.price.value = s.price;
+        stockForm.mrp.value = s.mrp || '';
+        
+        stockSubmitBtn.textContent = 'Update Stock';
+        stockCancelBtn.style.display = 'inline-block';
+        stockForm.scrollIntoView({behavior: 'smooth'});
+      };
+
+      window.deleteStock = (index) => {
+        if(confirm('Are you sure you want to delete this stock entry?')) {
+          const sid = stocks[index].id;
+          fetch('/api/stocks/' + sid, {method:'DELETE'}).then(() => {
+            stocks.splice(index, 1);
+            renderStocks(); updateSalesDropdowns();
+            if (window.renderTally) window.renderTally();
+            showToast('Stock deleted', '#d9534f');
+            if (editingStockIndex === index) stockCancelBtn.click();
+          });
+        }
+      };
+
+      if (stockCancelBtn) {
+        stockCancelBtn.addEventListener('click', () => {
+          stockForm.reset();
+          editingStockIndex = -1;
+          stockSubmitBtn.textContent = 'Add Stock';
+          stockCancelBtn.style.display = 'none';
+          setTodayDate('date');
+        });
+      }
+
+      if (stockForm) {
+        stockForm.addEventListener('submit', e => {
+          e.preventDefault();
+          // Disable button to prevent multiple submissions
+          stockSubmitBtn.disabled = true;
+
+          const data = {
+            date: stockForm.date.value || '',
+            type: stockForm.cylinderType.value || '',
+            qty: Number(stockForm.quantity.value) || 0,
+            price: Number(stockForm.price.value) || 0,
+            mrp: Number(stockForm.mrp.value) || 0
+          };
+          
+          const done = (row) => {
+            renderStocks(); updateSalesDropdowns(); if (window.renderTally) window.renderTally();
+            stockForm.reset(); setTodayDate('date'); stockSubmitBtn.disabled = false;
+          };
+          if (editingStockIndex === -1) {
+            fetch('/api/stocks', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)})
+              .then(r=>r.json()).then(row => { stocks.push({...data, id:row.id}); showPopup('Success!','Stock added successfully!'); done(row); });
+          } else {
+            const sid = stocks[editingStockIndex].id;
+            fetch('/api/stocks/'+sid, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)})
+              .then(r=>r.json()).then(row => {
+                stocks[editingStockIndex]={...data,id:sid};
+                editingStockIndex=-1; stockSubmitBtn.textContent='Add Stock'; stockCancelBtn.style.display='none';
+                showPopup('Success!','Stock updated successfully!'); done(row);
+              });
+          }
+        });
+      }
+
+      // --- Customers: storage + render ---
+      const customerForm = document.querySelector('#customerForm');
+      const customerTableBody = document.querySelector('#customerTable tbody');
+      const customerSubmitBtn = document.getElementById('customerSubmitBtn');
+      const customerCancelBtn = document.getElementById('customerCancelBtn');
+      let customers = [];
+      let editingCustomerIndex = -1;
+
+      const salesTableBody = document.querySelector('#salesTable tbody');
+      let sales = [];
+      let editingSaleIndex = -1;
+
+      function getCustomerPendingAmount(customer) {
+        const openingBalance = Number(customer.old_balance) || 0;
+        const salesBalance = sales
+          .filter(s => s.customerName === customer.name)
+          .reduce((sum, s) => sum + (Number(s.balance) || 0), 0);
+        return openingBalance + salesBalance;
+      }
+
+      function renderCustomers() {
+        if (!customerTableBody) return;
+        customerTableBody.innerHTML = '';
+        if (customers.length === 0) {
+          customerTableBody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:#666">No customers added yet</td></tr>';
+          return;
+        }
+        customers.forEach((c, index) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${formatDate(c.date)}</td><td>${escapeHtml(c.name)}</td><td>${escapeHtml(c.phone)}</td><td>${escapeHtml(c.address)}</td><td>${escapeHtml(c.gstin || '-')}</td><td>${c.deposit || '-'}</td><td>${c.old_balance || '-'}</td><td>₹${getCustomerPendingAmount(c).toFixed(2)}</td><td><button class="action-btn edit-btn" onclick="editCustomer(${index})">Edit</button> <button class="action-btn delete-btn" onclick="deleteCustomer(${index})">Delete</button> <button class="action-btn" style="background-color:#4CAF50" onclick="printCustomerReport(${index})">Print</button></td>`;
+          customerTableBody.appendChild(tr);
+        });
+      }
+
+      if (customerForm) {
+        customerForm.addEventListener('submit', e => {
+          e.preventDefault();
+          const data = {
+            date: document.getElementById('custDate').value || '',
+            name: customerForm.custName.value || '',
+            phone: customerForm.custPhone.value || '',
+            address: customerForm.custAddress.value || '',
+            gstin: customerForm.custgstin.value || '',
+            deposit: customerForm.custDeposit.value || '',
+            old_balance: customerForm.custOldBalance.value || ''
+          };
+
+          const custDone = () => { renderCustomers(); updateSalesDropdowns(); customerForm.reset(); setTodayDate('custDate'); };
+          if (editingCustomerIndex === -1) {
+            fetch('/api/customers',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+              .then(async r => { const body = await r.json(); if (!r.ok) throw new Error(body.error || 'Customer could not be saved'); return body; })
+              .then(row=>{ customers.push({...data,id:row.id}); showPopup('Success!','Customer added successfully!'); custDone(); })
+              .catch(err => showPopup('Save failed', err.message));
+          } else {
+            const cid = customers[editingCustomerIndex].id;
+            fetch('/api/customers/'+cid,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+              .then(async r => { const body = await r.json(); if (!r.ok) throw new Error(body.error || 'Customer could not be updated'); return body; })
+              .then(()=>{
+                customers[editingCustomerIndex]={...data,id:cid};
+                editingCustomerIndex=-1; customerSubmitBtn.textContent='Add Customer'; customerCancelBtn.style.display='none';
+                showPopup('Success!','Customer updated successfully!'); custDone();
+              }).catch(err => showPopup('Save failed', err.message));
+          }
+        });
+      }
+
+      window.editCustomer = (index) => {
+        const c = customers[index];
+        editingCustomerIndex = index;
+
+        customerForm.custName.value = c.name;
+        document.getElementById('custDate').value = c.date;
+        customerForm.custPhone.value = c.phone;
+        customerForm.custAddress.value = c.address;
+        customerForm.custgstin.value = c.gstin || '';
+        customerForm.custDeposit.value = c.deposit || '';
+        customerForm.custOldBalance.value = c.old_balance || '';
+
+        customerSubmitBtn.textContent = 'Update Customer';
+        customerCancelBtn.style.display = 'inline-block';
+        customerForm.scrollIntoView({behavior: 'smooth'});
+      };
+
+      window.deleteCustomer = (index) => {
+        if(confirm('Are you sure you want to delete this customer? This might affect sales records.')) {
+          const cid = customers[index].id;
+          fetch('/api/customers/'+cid,{method:'DELETE'}).then(()=>{
+            customers.splice(index, 1); renderCustomers(); updateSalesDropdowns();
+            showToast('Customer deleted','#d9534f');
+            if (editingCustomerIndex === index) customerCancelBtn.click();
+          });
+        }
+      };
+
+      window.printCustomerReport = (index) => {
+        const c = customers[index];
+        // Gather Sales
+        const custSales = sales.filter(s => s.customerName === c.name);
+        // Gather Manual Returns
+        const custReturns = stockReturns.filter(r => r.customerName === c.name);
+
+        // Calculate Stats
+        const totalBought = custSales.reduce((sum, s) => sum + (Number(s.cylinders) || 0), 0);
+        const returnedViaSales = custSales.reduce((sum, s) => sum + (Number(s.returnCyl) || 0), 0);
+        const returnedViaManual = custReturns.reduce((sum, r) => sum + (Number(r.qty) || 0), 0);
+        const totalReturned = returnedViaSales + returnedViaManual;
+        const pending = totalBought - totalReturned;
+        
+        // Calculate Financials
+        const totalRevenue = custSales.reduce((sum, s) => sum + (parseFloat(s.total) || 0), 0);
+        const totalPaid = custSales.reduce((sum, s) => sum + (parseFloat(s.paid) || 0), 0);
+        const totalBalance = totalRevenue - totalPaid;
+        const oldBalance = Number(c.old_balance) || 0;
+        const totalPendingAmount = oldBalance + totalBalance;
+
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Statement - ${c.name}</title>
+            <style>
+              @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+              body { font-family: 'Poppins', sans-serif; padding: 40px; color: #2d3748; background: #fff; }
+              .invoice-box { max-width: 800px; margin: auto; padding: 30px; border: 1px solid #eee; box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); }
+              .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #667eea; padding-bottom: 20px; margin-bottom: 30px; }
+              .brand h1 { margin: 0; color: #667eea; font-size: 24px; letter-spacing: 1px; text-transform: uppercase; }
+              .brand p { margin: 5px 0 0; font-size: 15px; color: #718096; }
+              .meta { text-align: right; font-size: 14px; color: #718096; }
+              .section-title { font-size: 16px; font-weight: 600; color: #4a5568; margin-bottom: 15px; border-left: 4px solid #667eea; padding-left: 10px; }
+              .customer-info { margin-bottom: 30px; background: #f7fafc; padding: 20px; border-radius: 8px; font-size: 14px; }
+              .customer-info p { margin: 5px 0; }
+              table { width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 13px; }
+              th { background: #667eea; color: white; padding: 12px; text-align: left; font-weight: 500; }
+              td { padding: 12px; border-bottom: 1px solid #edf2f7; }
+              tr:nth-child(even) { background-color: #f8fafc; }
+              .totals-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
+              .total-card { background: #fff; border: 1px solid #e2e8f0; padding: 15px; text-align: center; border-radius: 8px; }
+              .total-card h4 { margin: 0 0 5px; font-size: 12px; color: #718096; text-transform: uppercase; }
+              .total-card .value { font-size: 20px; font-weight: 600; color: #2d3748; }
+              .status-red { color: #e53e3e; }
+              .status-green { color: #38a169; }
+              .footer { text-align: center; font-size: 12px; color: #a0aec0; margin-top: 50px; border-top: 1px solid #edf2f7; padding-top: 20px; }
+              @media print {
+                body { padding: 0; }
+                .invoice-box { box-shadow: none; border: none; }
+                .no-print { display: none; }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="invoice-box">
+              <div class="header">
+                <div class="brand">
+                  <h2>SIVAGNANAM TRADERS</h2>
+                 <p>NO. 2/A, Sivan East Street, Neravy,<br> Karaikal, Puducherry - 609604.</p>
+                 <p>Phone: +91 8012714239 <br> Email: sivagnanamtraders@gmail.com</p>
+                </div>
+                <div class="meta">
+                  <p>Date: ${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}</p>
+                  <p>Time: ${new Date().toLocaleTimeString()}</p>
+                </div>
+              </div>
+
+              <div class="customer-info">
+                <div class="section-title" style="margin-top:0; border:none; padding:0;">Customer Profile</div>
+                <p><strong>Name:</strong> ${c.name}</p>
+                <p><strong>Phone:</strong> ${c.phone}</p>
+                <p><strong>Address:</strong> ${c.address}</p>
+                <p><strong>GSTIN:</strong> ${c.gstin}</p>
+                
+              </div>
+              <div class="customer-info">
+                <p><strong>Deposit Amount:</strong> ₹${c.deposit || '0'}</p>
+              </div>
+
+              <div class="section-title">Transaction Summary</div>
+              <div class="totals-grid">
+                <div class="total-card"><h4>Purchased</h4><div class="value">${totalBought} <small>Cyl</small></div></div>
+                <div class="total-card"><h4>Returned</h4><div class="value">${totalReturned} <small>Cyl</small></div></div>
+                <div class="total-card"><h4>Pending</h4><div class="value ${pending > 0 ? 'status-red' : 'status-green'}">${pending} <small>Cyl</small></div></div>
+                <div class="total-card"><h4>Total Billed</h4><div class="value">₹${totalRevenue.toFixed(2)}</div></div>
+                <div class="total-card"><h4>Total Paid</h4><div class="value">₹${totalPaid.toFixed(2)}</div></div>
+                <div class="total-card"><h4>Balance Due</h4><div class="value ${totalPendingAmount > 0 ? 'status-red' : 'status-green'}">₹${totalPendingAmount.toFixed(2)}</div></div>
+              </div>
+
+              <div class="section-title" style="margin-top:30px;">Recent Activity</div>
+              <table>
+                <thead>
+                  <tr><th>Date</th><th>Description</th><th>Qty (Out)</th><th>Empty (In)</th><th>Amount</th><th>Paid</th></tr>
+                </thead>
+                <tbody>
+                  ${custSales.map(s => `
+                    <tr>
+                      <td>${formatDate(s.date)}</td>
+                      <td>Sale - ${s.cylinderType}</td>
+                      <td>${s.cylinders}</td>
+                      <td>${s.returnCyl || 0}</td>
+                      <td>${s.total}</td>
+                      <td>${s.paid || 0}</td>
+                    </tr>
+                  `).join('')}
+                  ${custReturns.map(r => `
+                    <tr>
+                      <td>${formatDate(r.date)}</td>
+                      <td>Return - ${r.type}</td>
+                      <td>-</td>
+                      <td>${r.qty}</td>
+                      <td>-</td>
+                      <td>-</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+
+              <div class="footer">
+                <p>Thank you for choosing Sivagnanam Traders.</p>
+                <p>This is a computer-generated report.</p>
+              </div>
+              <div class="no-print" style="text-align: center; margin-top: 30px;">
+                <button onclick="window.print()" style="background: #667eea; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; margin-right: 10px;">Print Report</button>
+                <button onclick="window.close()" style="background: #718096; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600;">Close</button>
+              </div>
+            </div>
+          </body>
+          </html>
+        `);
+        printWindow.document.close();
+      };
+
+      if (customerCancelBtn) {
+        customerCancelBtn.addEventListener('click', () => {
+          customerForm.reset();
+          editingCustomerIndex = -1;
+          customerSubmitBtn.textContent = 'Add Customer';
+          customerCancelBtn.style.display = 'none';
+          setTodayDate('custDate');
+        });
+      }
+
+      // --- Sales: Logic to connect Stock & Customer ---
+      const salesForm = document.getElementById('salesForm');
+      const saleSubmitBtn = document.getElementById('saleSubmitBtn');
+      const saleCancelBtn = document.getElementById('saleCancelBtn');
+      const saleCustomerSelect = document.getElementById('saleCustomer');
+      const saleCustDetails = document.getElementById('saleCustDetails');
+      const saleCylinderSelect = document.getElementById('saleCylinderType');
+      const saleStockDetails = document.getElementById('saleStockDetails');
+      const salePriceInput = document.getElementById('salePrice');
+      const saleQtyInput = document.getElementById('saleCylinders');
+      const saleTotalInput = document.getElementById('saleTotal');
+      const salePaidInput = document.getElementById('salePaid');
+      const saleBalanceInput = document.getElementById('saleBalance');
+      const saleReturnInput = document.getElementById('saleReturn');
+      const saleCylBalanceInput = document.getElementById('saleCylBalance');
+
+      const setSalesDateToday = () => {
+        const d = new Date();
+        const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        const el = document.getElementById('saleDate');
+        if (el) el.value = todayStr;
+      };
+
+      const returnCustomerSelect = document.getElementById('returnCustomer');
+      const ledgerCustomerList = document.getElementById('ledger-customer-list');
+      const returnTypeSelect = document.getElementById('returnType');
+
+      // Helper to calculate available stock for a given cylinder type
+      function getAvailableStock(type) {
+        const totalIn = stocks
+            .filter(s => s.type === type)
+            .reduce((sum, s) => sum + (Number(s.qty) || 0), 0);
+        const totalOut = sales
+            .filter(s => s.cylinderType === type)
+            .reduce((sum, s) => sum + (Number(s.cylinders) || 0), 0);
+        return totalIn - totalOut;
+      }
+
+      function updateSalesDropdowns() {
+        // Populate Customers
+        const currentCustName = saleCustomerSelect.value;
+        const dataList = document.getElementById('customerListOptions');
+        if (dataList) dataList.innerHTML = '';
+        
+        if(ledgerCustomerList) ledgerCustomerList.innerHTML = '';
+        
+        customers.forEach((c, index) => {
+          if (dataList) {
+            const opt = document.createElement('option');
+            opt.value = c.name;
+            opt.textContent = `${c.name} - ${c.phone}`;
+            dataList.appendChild(opt);
+          }
+          
+          if(ledgerCustomerList) {
+             const opt3 = document.createElement('option');
+             opt3.value = c.name;
+             ledgerCustomerList.appendChild(opt3);
+          }
+        });
+        if (currentCustName) saleCustomerSelect.value = currentCustName;
+
+        // Populate Cylinder Types from Stock
+        const currentType = saleCylinderSelect.value;
+        const currentRetType = returnTypeSelect ? returnTypeSelect.value : '';
+
+        saleCylinderSelect.innerHTML = '<option value="">Select Type</option>';
+        if(returnTypeSelect) returnTypeSelect.innerHTML = '<option value="">Select Type</option>';
+
+        const types = [...new Set(stocks.map(s => s.type))];
+        types.forEach(t => {
+          const opt = document.createElement('option');
+          opt.value = t;
+          opt.textContent = t;
+          saleCylinderSelect.appendChild(opt);
+
+          if(returnTypeSelect) {
+             const opt2 = document.createElement('option');
+             opt2.value = t;
+             opt2.textContent = t;
+             returnTypeSelect.appendChild(opt2);
+          }
+        });
+        if (currentType) saleCylinderSelect.value = currentType;
+        if (currentRetType && returnTypeSelect) returnTypeSelect.value = currentRetType;
+      }
+
+      // Calculate Customer Cylinder Ledger Balance
+      function getCustomerLedgerBalance(name, excludeSaleIndex = -1) {
+        let balance = 0;
+        // Sales (Out - In)
+        sales.forEach((s, idx) => {
+          if (s.customerName === name && idx !== excludeSaleIndex) {
+            balance += (Number(s.cylinders) || 0) - (Number(s.returnCyl) || 0);
+          }
+        });
+        // Returns Manual (In)
+        stockReturns.forEach(r => {
+          if (r.customerName === name) {
+            balance -= (Number(r.qty) || 0);
+          }
+        });
+        return balance;
+      }
+
+      // Show Customer Details on selection
+      saleCustomerSelect.addEventListener('input', () => {
+        const name = saleCustomerSelect.value;
+        const customer = customers.find(c => c.name === name);
+
+        if (customer) {
+          const currentBalance = getCustomerLedgerBalance(name, editingSaleIndex);
+          const currentPendingAmount = getCustomerPendingAmount(customer);
+          saleCustDetails.style.display = 'block';
+          saleCustDetails.innerHTML = `<strong>Phone:</strong> ${escapeHtml(customer.phone)}<br><strong>Address:</strong> ${escapeHtml(customer.address)}<br><strong>Pending Amount:</strong> ₹${currentPendingAmount.toFixed(2)}<br><strong>Pending Cylinders:</strong> ${currentBalance}`;
+          calculateCylBalance();
+        } else {
+          saleCustDetails.style.display = 'none';
+          saleCylBalanceInput.value = '';
+        }
+      });
+
+      // Show Cylinder Details (Price) on selection
+      saleCylinderSelect.addEventListener('change', () => {
+        const type = saleCylinderSelect.value;
+        if (type) {
+          const available = getAvailableStock(type);
+          // Find latest stock price for this type
+          const relevantStocks = stocks.filter(s => s.type === type);
+          if (relevantStocks.length > 0) {
+            const latest = relevantStocks[relevantStocks.length - 1];
+            const sellingPrice = (latest.mrp && latest.mrp > 0) ? latest.mrp : latest.price; // Use MRP if set, otherwise fallback to buying price
+            saleStockDetails.style.display = 'block';
+            // Link the MRP to the sales price
+            saleStockDetails.innerHTML = `<strong>Selling Price (MRP):</strong> ${sellingPrice}<br><strong>Available Stock:</strong> ${available}`;
+            salePriceInput.value = sellingPrice;
+            calculateAmount();
+          }
+        } else {
+          saleStockDetails.style.display = 'none';
+          salePriceInput.value = '';
+        }
+      });
+
+
+      // Auto-calculate totals
+
+      function calculateBalance() {
+        const total = parseFloat(saleTotalInput.value) || 0;
+        const paid = parseFloat(salePaidInput.value) || 0;
+        saleBalanceInput.value = (total - paid).toFixed(2);
+      }
+
+      function calculateAmount() {
+        const qty = parseFloat(saleQtyInput.value) || 0;
+        const price = parseFloat(salePriceInput.value) || 0;
+        saleTotalInput.value = (qty * price).toFixed(2);
+        calculateBalance(); // Also update balance when amount changes
+      }
+
+      function calculateCylBalance() {
+        const name = saleCustomerSelect.value;
+        if (!name) return;
+        const existing = getCustomerLedgerBalance(name, editingSaleIndex);
+        const currentQty = parseFloat(saleQtyInput.value) || 0;
+        const currentReturn = parseFloat(saleReturnInput.value) || 0;
+        saleCylBalanceInput.value = (existing + currentQty - currentReturn);
+      }
+
+      saleQtyInput.addEventListener('input', calculateAmount);
+      saleQtyInput.addEventListener('input', calculateCylBalance);
+      salePriceInput.addEventListener('input', calculateAmount);
+      
+      saleReturnInput.addEventListener('input', calculateCylBalance);
+      saleTotalInput.addEventListener('input', calculateBalance);
+      salePaidInput.addEventListener('input', calculateBalance);
+
+      // --- Sales: storage + render ---
+
+      let salesView = 'today';
+
+      window.setSalesView = (view) => {
+        salesView = view === 'all' ? 'all' : 'today';
+        const todayButton = document.getElementById('showTodaySalesBtn');
+        const allButton = document.getElementById('showAllSalesBtn');
+        document.getElementById('salesListTitle').textContent = salesView === 'today' ? "Today's Sales" : 'All Sales';
+        todayButton.setAttribute('aria-pressed', String(salesView === 'today'));
+        allButton.setAttribute('aria-pressed', String(salesView === 'all'));
+        todayButton.style.backgroundColor = salesView === 'today' ? '#007bff' : '#718096';
+        allButton.style.backgroundColor = salesView === 'all' ? '#007bff' : '#718096';
+        renderSales();
+      };
+
+      function renderSales() {
+        if (!salesTableBody) return;
+        salesTableBody.innerHTML = '';
+        const today = new Date();
+        const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        const visibleSales = sales
+          .map((sale, index) => ({ sale, index }))
+          .filter(({ sale }) => salesView === 'all' || sale.date === todayString);
+        if (visibleSales.length === 0) {
+          const emptyMessage = salesView === 'today' ? 'No sales for today' : 'No sales added yet';
+          salesTableBody.innerHTML = `<tr><td colspan="10" style="text-align:center;color:#666">${emptyMessage}</td></tr>`;
+          return;
+        }
+        visibleSales.forEach(({ sale: s, index }) => {
+          const cIdx = customers.findIndex(c => c.name === s.customerName);
+          const custId = cIdx > -1 ? cIdx + 1 : '-';
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${formatDate(s.date)}</td><td>${custId}</td><td>${escapeHtml(s.customerName)}</td><td>${s.cylinders}</td><td>${s.returnCyl}</td><td>${s.price}</td><td>${s.total}</td><td>${s.paid}</td><td>${s.balance}</td><td><button class="action-btn edit-btn" onclick="editSale(${index})">Edit</button> <button class="action-btn delete-btn" onclick="deleteSale(${index})">Delete</button> <button class="action-btn" style="background-color:#4CAF50" onclick="printSaleBill(${index})">Print</button></td>`;
+          salesTableBody.appendChild(tr);
+        });
+      }
+
+      // Expose edit/delete to window so onclick works
+      window.editSale = (index) => {
+        const s = sales[index];
+        editingSaleIndex = index;
+        
+        // Populate form
+        salesForm.date.value = s.date;
+        
+        // Find customer index by name
+        saleCustomerSelect.value = s.customerName;
+        saleCustomerSelect.dispatchEvent(new Event('input', { bubbles: true }));
+
+        const taxType = s.taxType === 'igst' ? 'igst' : 'cgsg';
+        const taxTypeInput = salesForm.querySelector(`input[name="taxType"][value="${taxType}"]`);
+        if (taxTypeInput) taxTypeInput.checked = true;
+
+        // Set cylinder type if available
+        if (s.cylinderType) {
+          saleCylinderSelect.value = s.cylinderType;
+          saleCylinderSelect.dispatchEvent(new Event('change'));
+        }
+
+        // Override values
+        salePriceInput.value = s.price;
+        saleQtyInput.value = s.cylinders;
+        saleTotalInput.value = s.total;
+        salePaidInput.value = s.paid;
+        saleBalanceInput.value = s.balance;
+        document.getElementById('saleReturn').value = s.returnCyl;
+        calculateCylBalance();
+
+        // UI updates
+        saleSubmitBtn.textContent = 'Update Sale';
+        saleCancelBtn.style.display = 'inline-block';
+        salesForm.scrollIntoView({behavior: 'smooth'});
+      };
+
+      window.deleteSale = (index) => {
+        if(confirm('Are you sure you want to delete this sale?')) {
+          const saleId = sales[index].id;
+          fetch('/api/sales/'+saleId,{method:'DELETE'}).then(()=>{
+            sales.splice(index,1); renderSales(); renderCustomers();
+            if(window.renderTally) window.renderTally();
+            if(window.renderSalesReturns) window.renderSalesReturns();
+            showToast('Sale deleted','#d9534f');
+            if(editingSaleIndex===index) saleCancelBtn.click();
+          });
+        }
+      };
+
+      // --- Bill Print Logic ---
+      function numberToWords(n) {
+        if (n < 0) return 'Minus ' + numberToWords(-n);
+        if (n === 0) return 'Zero';
+        const a = ['','One ','Two ','Three ','Four ','Five ','Six ','Seven ','Eight ','Nine ','Ten ','Eleven ','Twelve ','Thirteen ','Fourteen ','Fifteen ','Sixteen ','Seventeen ','Eighteen ','Nineteen '];
+        const b = ['', '', 'Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+        
+        const num = parseInt(n);
+        if (num === 0) return '';
+        
+        let str = '';
+        if (num > 9999999) { str += numberToWords(Math.floor(num / 10000000)) + ' Crore '; n %= 10000000; }
+        if (n > 99999) { str += numberToWords(Math.floor(n / 100000)) + ' Lakh '; n %= 100000; }
+        if (n > 999) { str += numberToWords(Math.floor(n / 1000)) + ' Thousand '; n %= 1000; }
+        if (n > 99) { str += numberToWords(Math.floor(n / 100)) + ' Hundred '; n %= 100; }
+        if (n > 0) {
+           if (str !== '') str += 'and ';
+           if (n < 20) str += a[n];
+           else { str += b[Math.floor(n / 10)]; if (n % 10) str += ' ' + a[n % 10]; }
+        }
+        return str.trim();
+      }
+
+      window.printSaleBill = (index) => {
+        const s = sales[index];
+        const invoiceNumber = index + 1;
+        const c = customers.find(cust => cust.name === s.customerName) || { address: '', phone: '' };
+        
+        const total = parseFloat(s.total) || 0;
+        // Calculate Tax Breakdown (Assuming Total includes 18% GST)
+        const taxable = total / 1.18;
+        const taxAmt = total - taxable;
+        const cgst = taxAmt / 2;
+        const sgst = taxAmt / 2;
+        const ratePerUnit = taxable / (parseFloat(s.cylinders) || 1);
+        
+        const dateStr = formatDate(s.date);
+        const nowStr = new Date().toLocaleString('en-US', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit', hour12: true });
+
+        const w = window.open('', '_blank');
+        w.document.write(`
+          <!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tax Invoice – Invoice No. ${invoiceNumber}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: #111;
+      background: #f0f0f0;
+      padding: 24px;
+    }
+
+    .page {
+      background: #fff;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 20px 24px;
+      border: 1px solid #aaa;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+    .header-title {
+      font-size: 15px;
+      font-weight: bold;
+      text-align: center;
+      flex: 1;
+    }
+    .header-einvoice {
+      font-size: 11px;
+      font-weight: bold;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    /* ── IRN block ── */
+    .irn-block {
+      font-size: 10.5px;
+      margin-bottom: 10px;
+      line-height: 1.7;
+    }
+    .irn-block .row { display: flex; gap: 6px; }
+    .irn-block .label { font-weight: normal; min-width: 72px; }
+    .irn-block .value { font-weight: bold; }
+
+    /* ── Main grid: seller | invoice meta ── */
+    .top-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid #555;
+    }
+    .top-grid .cell {
+      padding: 6px 8px;
+      border-right: 1px solid #555;
+      border-bottom: 1px solid #555;
+    }
+    .top-grid .cell:last-child { border-right: none; }
+    .top-grid .cell.no-border-bottom { border-bottom: none; }
+
+    .seller-name { font-weight: bold; font-size: 12.5px; margin-bottom: 2px; }
+    .gstin-line { font-size: 11px; margin-top: 4px; }
+
+    /* ── Items table ── */
+    table.items {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #555;
+      margin-top: 0;
+    }
+    table.items th {
+      background: #f5f5f5;
+      font-size: 11px;
+      padding: 5px 6px;
+      border: 1px solid #555;
+      text-align: center;
+    }
+    table.items td {
+      padding: 5px 6px;
+      border: 1px solid #555;
+      font-size: 11.5px;
+      vertical-align: top;
+    }
+    table.items td.right { text-align: right; }
+    table.items td.center { text-align: center; }
+    table.items .label-bold { font-weight: bold; }
+
+    /* sub-total rows */
+    .subtotal-label { text-align: right; font-style: italic; font-weight: bold; font-size: 11px; }
+    .subtotal-amount { text-align: right; font-size: 11.5px; }
+
+    /* grand total row */
+    .total-row td { font-weight: bold; background: #f9f9f9; }
+
+    /* ── Words row ── */
+    .words-row {
+      display: flex;
+      justify-content: space-between;
+      border: 1px solid #555;
+      border-top: none;
+      padding: 4px 8px;
+      font-size: 11px;
+    }
+    .words-row .words-bold { font-weight: bold; }
+    .words-row .eoe { font-style: italic; }
+
+    /* ── Tax summary table ── */
+    table.tax-summary {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #555;
+      border-top: none;
+    }
+    table.tax-summary th {
+      background: #f5f5f5;
+      font-size: 10.5px;
+      padding: 4px 6px;
+      border: 1px solid #555;
+      text-align: center;
+    }
+    table.tax-summary td {
+      padding: 4px 6px;
+      border: 1px solid #555;
+      font-size: 11px;
+      text-align: right;
+    }
+    table.tax-summary td.left { text-align: left; }
+    table.tax-summary .total-row td { font-weight: bold; background: #f9f9f9; }
+
+    /* ── Tax words ── */
+    .tax-words {
+      border: 1px solid #555;
+      border-top: none;
+      padding: 4px 8px;
+      font-size: 11px;
+    }
+    .tax-words span { font-weight: bold; }
+
+    /* ── Footer: declaration + sign ── */
+    .footer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid #555;
+      border-top: none;
+    }
+    .footer .decl {
+      padding: 8px;
+      font-size: 10.5px;
+      border-right: 1px solid #555;
+    }
+    .footer .decl .decl-label { font-weight: bold; margin-bottom: 3px; }
+    .footer .sign {
+      padding: 8px;
+      text-align: right;
+      font-size: 11px;
+    }
+    .footer .sign .sign-name { font-weight: bold; margin-bottom: 32px; }
+    .footer .sign .auth { font-size: 10.5px; color: #333; }
+
+    .computer-gen {
+      text-align: center;
+      font-size: 10.5px;
+      margin-top: 8px;
+      color: #444;
+    }
+
+    @media print {
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Title ── -->
+  <div class="header">
+    <div style="width:80px"></div>
+    <div class="header-title">Tax Invoice</div>
+    <div class="header-einvoice">e-Invoice</div>
+  </div>
+
+  <!-- ── Seller + Invoice No/Date ── -->
+  <div class="top-grid">
+    <div class="cell" style="border-bottom:1px solid #555;">
+      <div class="seller-name">SIVAGNANAM TRADERS</div>
+      <div>NO. 2/A, Sivan East Street, Neravy,</div>
+      <div>Karaikal, Puducherry - 609604</div>
+      <div class="gstin-line">GSTIN/UIN: 34EBGPK1756J1ZI</div>
+      <div class="gstin-line">State Name : Puducherry, Code : 34</div>
+    </div>
+    <div style="display:grid; grid-template-rows:1fr 1fr; border-bottom:1px solid #555;">
+      <div class="cell" style="border-bottom:1px solid #555; border-right:none;">
+        <div class="meta-label" style="font-size:10px;color:#555;">Invoice No.</div>
+        <div class="meta-value" style="font-weight:bold;font-size:13px;">${invoiceNumber}</div>
+      </div>
+      <div class="cell" style="border-right:none; border-bottom:none;">
+        <div class="meta-label" style="font-size:10px;color:#555;">Dated</div>
+        <div class="meta-value" style="font-weight:bold;">${dateStr}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Consignee / Buyer + meta fields ── -->
+  <div style="display:grid; grid-template-columns:1fr 1fr; border:1px solid #555; border-top:none;">
+
+    <!-- Left: Consignee -->
+    <div style="border-right:1px solid #555;">
+      <div style="padding:3px 8px 0; font-size:10px; color:#444;">Consignee (Ship to)</div>
+      <div style="padding:2px 8px 6px; border-bottom:1px solid #555;">
+        <div class="party-name">${c.name}</div>
+        <div>${c.address}</div>
+        <div class="gstin-line">GSTIN/UIN : ${c.gstin || ''}</div>
+        <div class="gstin-line">State Name : Puducherry, Code : 34</div>
+      </div>
+      <div style="padding:3px 8px 0; font-size:10px; color:#444;">Buyer (Bill to)</div>
+      <div style="padding:2px 8px 6px;">
+        <div class="party-name">${c.name}</div>
+        <div>${c.address}</div>
+        <div class="gstin-line">GSTIN/UIN : ${c.gstin || ''}</div>
+        <div class="gstin-line">State Name : Puducherry, Code : 34</div>
+      </div>
+    </div>
+
+    <!-- Right: meta grid -->
+    <div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; height:100%;">
+        <div style="padding:4px 8px; border-right:1px solid #555; border-bottom:1px solid #555; font-size:11px;">
+          <div style="color:#555;font-size:10px;">Delivery Note</div>
+        </div>
+        <div style="padding:4px 8px; border-bottom:1px solid #555; font-size:11px;">
+          <div style="color:#555;font-size:10px;">Mode/Terms of Payment</div>
+        </div>
+        <div style="padding:4px 8px; border-right:1px solid #555; border-bottom:1px solid #555; font-size:11px;">
+          <div style="color:#555;font-size:10px;">Reference No. &amp; Date.</div>
+        </div>
+        <div style="padding:4px 8px; border-bottom:1px solid #555; font-size:11px;">
+          <div style="color:#555;font-size:10px;">Other References</div>
+        </div>
+        <div style="padding:4px 8px; border-right:1px solid #555; border-bottom:1px solid #555; font-size:11px;">
+          <div style="color:#555;font-size:10px;">Buyer's Order No.</div>
+        </div>
+        <div style="padding:4px 8px; border-bottom:1px solid #555; font-size:11px;">
+          <div style="color:#555;font-size:10px;">Dated</div>
+        </div>
+        <div style="padding:4px 8px; border-right:1px solid #555; border-bottom:1px solid #555; font-size:11px;">
+          <div style="color:#555;font-size:10px;">Dispatch Doc No.</div>
+        </div>
+        <div style="padding:4px 8px; border-bottom:1px solid #555; font-size:11px;">
+          <div style="color:#555;font-size:10px;">Delivery Note Date</div>
+        </div>
+        <div style="padding:4px 8px; border-right:1px solid #555; border-bottom:1px solid #555; font-size:11px;">
+          <div style="color:#555;font-size:10px;">Dispatched through</div>
+        </div>
+        <div style="padding:4px 8px; border-bottom:1px solid #555; font-size:11px;">
+          <div style="color:#555;font-size:10px;">Destination</div>
+        </div>
+        <div style="padding:4px 8px; border-right:1px solid #555; border-bottom:1px solid #555; font-size:11px;">
+          <div style="color:#555;font-size:10px;">Bill of Lading/LR-RR No.</div>
+        </div>
+        <div style="padding:4px 8px; border-bottom:1px solid #555; font-size:11px;">
+          <div style="color:#555;font-size:10px;">Motor Vehicle No.</div>
+          <div style="font-weight:bold;">${s.vehicle || 'N/A'}</div>
+        </div>
+        <div style="padding:4px 8px; border-right:1px solid #555; font-size:11px; grid-column:1/3;">
+          <div style="color:#555;font-size:10px;">Terms of Delivery</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Items Table ── -->
+  <table class="items">
+    <thead>
+      <tr>
+        <th style="width:28px;">Sl<br>No.</th>
+        <th style="text-align:left;">Description of Goods</th>
+        <th>HSN/SAC</th>
+        <th>Quantity</th>
+        <th>Rate</th>
+        <th>per</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="center">1</td>
+        <td><span class="label-bold">${s.cylinderType}</span></td>
+        <td class="center">27111910</td>
+        <td class="center"><strong>${s.cylinders} No</strong></td>
+        <td class="right">${ratePerUnit.toFixed(2)}</td>
+        <td class="center">No</td>
+        <td class="right">${taxable.toFixed(2)}</td>
+      </tr>
+      <!-- spacer -->
+      <tr>
+        ${s.taxType === 'igst' ? `
+          <td colspan="6" class="subtotal-label">Output IGST 18%</td>
+          <td class="subtotal-amount">${taxAmt.toFixed(2)}</td>
+        ` : `
+          <td colspan="6" class="subtotal-label">Output SGST 9%</td>
+          <td class="subtotal-amount">${sgst.toFixed(2)}</td>
+        `}
+      </tr>
+      ${s.taxType !== 'igst' ? `
+        <tr>
+          <td colspan="6" class="subtotal-label">Output CGST 9%</td>
+          <td class="subtotal-amount">${cgst.toFixed(2)}</td>
+        </tr>
+      ` : ''}
+      <tr>
+        <td colspan="6" class="subtotal-label">Rounded Off</td>
+        <td class="subtotal-amount">${(total - (taxable + taxAmt)).toFixed(2)}</td>
+      </tr>
+      <!-- Total -->
+      <tr class="total-row">
+        <td colspan="3" style="text-align:right;">Total</td>
+        <td class="center">${s.cylinders} No</td>
+        <td colspan="2"></td>
+        <td class="right">₹ ${total.toFixed(2)}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── Amount in words ── -->
+  <div class="words-row">
+    <div>
+      <span>Amount Chargeable (in words)</span><br>
+      <span class="words-bold">INR ${numberToWords(Math.round(total))} Only</span>
+    </div>
+    <div class="eoe">E. &amp; O.E</div>
+  </div>
+
+  <!-- ── Tax Summary ── -->
+  <table class="tax-summary">
+    <thead>
+      <tr>
+        <th rowspan="2">HSN/SAC</th>
+        <th rowspan="2">Taxable<br>Value</th>
+        ${s.taxType === 'igst' ? `
+          <th colspan="2">IGST</th>
+        ` : `
+          <th colspan="2">CGST</th>
+          <th colspan="2">SGST/UTGST</th>
+        `}
+        <th rowspan="2">Total<br>Tax Amount</th>
+      </tr>
+      <tr>
+        <th>Rate</th><th>Amount</th>
+        ${s.taxType !== 'igst' ? `
+          <th>Rate</th><th>Amount</th>
+        ` : ''}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="left">27111910</td>
+        <td>${taxable.toFixed(2)}</td>
+        ${s.taxType === 'igst' ? `
+          <td>18%</td>
+          <td>${taxAmt.toFixed(2)}</td>
+        ` : `
+          <td>9%</td>
+          <td>${cgst.toFixed(2)}</td>
+          <td>9%</td>
+          <td>${sgst.toFixed(2)}</td>
+        `}
+        <td>${taxAmt.toFixed(2)}</td>
+      </tr>
+      <tr class="total-row">
+        <td class="left">Total</td>
+        <td>${taxable.toFixed(2)}</td>
+        ${s.taxType === 'igst' ? `
+          <td></td>
+          <td>${taxAmt.toFixed(2)}</td>
+        ` : `
+          <td></td>
+          <td>${cgst.toFixed(2)}</td>
+          <td></td>
+          <td>${sgst.toFixed(2)}</td>
+        `}
+        <td>${taxAmt.toFixed(2)}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── Tax amount in words ── -->
+  <div class="tax-words">
+    Tax Amount (in words) : <span>INR ${numberToWords(Math.floor(taxAmt))} and ${numberToWords(Math.round((taxAmt % 1) * 100))} paise Only</span>
+  </div>
+
+  <!-- ── Footer ── -->
+  <div class="footer">
+    <div class="decl">
+      <div class="decl-label">Declaration</div>
+      <div>We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.</div>
+    </div>
+    <div class="sign">
+      <div class="sign-name">for SIVAGNANAM TRADERS</div>
+      <div class="auth">Authorised Signatory</div>
+    </div>
+  </div>
+
+  <div class="computer-gen">This is a Computer Generated Invoice</div>
+
+  <div class="no-print" style="text-align: center; margin-top: 20px;">
+    <button onclick="window.print()" style="padding: 10px 20px; font-size: 14px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 5px;">Print Bill</button>
+    <button onclick="window.close()" style="padding: 10px 20px; font-size: 14px; cursor: pointer; background: #6c757d; color: white; border: none; border-radius: 5px; margin-left: 10px;">Close</button>
+  </div>
+
+</div>
+</body>
+</html>
+        `);
+        w.document.close(); 
+      };
+
+      // --- New Quick Bill (No-Save) Logic ---
+      const qbQtyInput = document.getElementById('qbQty');
+      const qbMrpInput = document.getElementById('qbMrp');
+      const qbTaxableTotalInput = document.getElementById('qbTaxableTotal');
+      const qbGstAmountInput = document.getElementById('qbGstAmount');
+      const qbGrandTotalInput = document.getElementById('qbGrandTotal');
+      const qbInvoiceInput = document.getElementById('qbInvoice');
+      let nextQuickBillInvoiceNumber = 1;
+
+      window.clearQuickBill = () => {
+        document.getElementById('quickBillForm').reset();
+        setTodayDate('qbDate');
+        qbInvoiceInput.value = nextQuickBillInvoiceNumber;
+      };
+
+      function calculateQuickBillTotal() {
+        const qty = parseFloat(qbQtyInput.value) || 0;
+        const mrp = parseFloat(qbMrpInput.value) || 0;
+        const grandTotal = qty * mrp;
+        const taxable = grandTotal / 1.18;
+        const gst = grandTotal - taxable;
+        qbTaxableTotalInput.value = taxable.toFixed(2);
+        qbGstAmountInput.value = gst.toFixed(2);
+        qbGrandTotalInput.value = grandTotal.toFixed(2);
+      }
+
+      if(qbQtyInput) qbQtyInput.addEventListener('input', calculateQuickBillTotal);
+      if(qbMrpInput) qbMrpInput.addEventListener('input', calculateQuickBillTotal);
+
+      window.printQuickBill = () => {
+          const id = String(nextQuickBillInvoiceNumber);
+          const date = document.getElementById('qbDate').value;
+          const customerName = document.getElementById('qbCustomer').value;
+          const customerPhone = document.getElementById('qbPhone').value;
+          const customerAddress = document.getElementById('qbAddress').value;
+          const product = document.getElementById('qbProduct').value;
+          const cylinders = document.getElementById('qbQty').value;
+          const returnCyl = document.getElementById('qbReturn').value;
+          const price = parseFloat(document.getElementById('qbMrp').value) || 0;
+          const taxable = parseFloat(document.getElementById('qbTaxableTotal').value) || 0;
+          const total = parseFloat(document.getElementById('qbGrandTotal').value) || 0;
+
+          const taxAmt = taxable * 0.18;
+          const cgst = taxAmt / 2;
+          const sgst = taxAmt / 2;
+          const ratePerUnit = taxable / (parseFloat(cylinders) || 1);
+
+          const dateStr = formatDate(date);
+
+          const w = window.open('', '_blank');
+          w.document.write(`<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tax Invoice – Invoice No. ${id}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; font-size: 12px; color: #111; background: #f0f0f0; padding: 24px; }
+    .page { background: #fff; max-width: 780px; margin: 0 auto; padding: 20px 24px; border: 1px solid #aaa; }
+    .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+    .header-title { font-size: 15px; font-weight: bold; text-align: center; flex: 1; }
+    .header-einvoice { font-size: 11px; font-weight: bold; text-align: right; white-space: nowrap; }
+    .irn-block { font-size: 10.5px; margin-bottom: 10px; line-height: 1.7; }
+    .irn-block .row { display: flex; gap: 6px; }
+    .irn-block .label { font-weight: normal; min-width: 72px; }
+    .irn-block .value { font-weight: bold; }
+    .top-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #555; }
+    .top-grid .cell { padding: 6px 8px; border-right: 1px solid #555; border-bottom: 1px solid #555; }
+    .top-grid .cell:last-child { border-right: none; }
+    .top-grid .cell.no-border-bottom { border-bottom: none; }
+    .seller-name { font-weight: bold; font-size: 12.5px; margin-bottom: 2px; }
+    .gstin-line { font-size: 11px; margin-top: 4px; }
+    table.items { width: 100%; border-collapse: collapse; border: 1px solid #555; margin-top: 0; }
+    table.items th { background: #f5f5f5; font-size: 11px; padding: 5px 6px; border: 1px solid #555; text-align: center; }
+    table.items td { padding: 5px 6px; border: 1px solid #555; font-size: 11.5px; vertical-align: top; }
+    table.items td.right { text-align: right; }
+    table.items td.center { text-align: center; }
+    table.items .label-bold { font-weight: bold; }
+    .subtotal-label { text-align: right; font-style: italic; font-weight: bold; font-size: 11px; }
+    .subtotal-amount { text-align: right; font-size: 11.5px; }
+    .total-row td { font-weight: bold; background: #f9f9f9; }
+    .words-row { display: flex; justify-content: space-between; border: 1px solid #555; border-top: none; padding: 4px 8px; font-size: 11px; }
+    .words-row .words-bold { font-weight: bold; }
+    .words-row .eoe { font-style: italic; }
+    table.tax-summary { width: 100%; border-collapse: collapse; border: 1px solid #555; border-top: none; }
+    table.tax-summary th { background: #f5f5f5; font-size: 10.5px; padding: 4px 6px; border: 1px solid #555; text-align: center; }
+    table.tax-summary td { padding: 4px 6px; border: 1px solid #555; font-size: 11px; text-align: right; }
+    table.tax-summary td.left { text-align: left; }
+    table.tax-summary .total-row td { font-weight: bold; background: #f9f9f9; }
+    .tax-words { border: 1px solid #555; border-top: none; padding: 4px 8px; font-size: 11px; }
+    .tax-words span { font-weight: bold; }
+    .footer { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #555; border-top: none; }
+    .footer .decl { padding: 8px; font-size: 10.5px; border-right: 1px solid #555; }
+    .footer .decl .decl-label { font-weight: bold; margin-bottom: 3px; }
+    .footer .sign { padding: 8px; text-align: right; font-size: 11px; }
+    .footer .sign .sign-name { font-weight: bold; margin-bottom: 32px; }
+    .footer .sign .auth { font-size: 10.5px; color: #333; }
+    .computer-gen { text-align: center; font-size: 10.5px; margin-top: 8px; color: #444; }
+    @media print { .no-print { display: none; } }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div style="width:80px"></div>
+    <div class="header-title">Tax Invoice</div>
+    <div class="header-einvoice">e-Invoice</div>
+  </div>
+  <div class="top-grid">
+    <div class="cell" style="border-bottom:1px solid #555;">
+      <div class="seller-name">SIVAGNANAM TRADERS</div>
+      <div>NO. 2/A, Sivan East Street, Neravy,</div>
+      <div>Karaikal, Puducherry - 609604</div>
+      <div class="gstin-line">GSTIN/UIN: 34EBGPK1756J1ZI</div>
+      <div class="gstin-line">State Name : Puducherry, Code : 34</div>
+    </div>
+    <div style="display:grid; grid-template-rows:1fr 1fr; border-bottom:1px solid #555;">
+      <div class="cell" style="border-bottom:1px solid #555; border-right:none;">
+        <div class="meta-label" style="font-size:10px;color:#555;">Invoice No.</div>
+        <div class="meta-value" style="font-weight:bold;font-size:13px;">${id}</div>
+      </div>
+      <div class="cell" style="border-right:none; border-bottom:none;">
+        <div class="meta-label" style="font-size:10px;color:#555;">Dated</div>
+        <div class="meta-value" style="font-weight:bold;">${dateStr}</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; border:1px solid #555; border-top:none;">
+    <div style="border-right:1px solid #555;">
+      <div style="padding:3px 8px 0; font-size:10px; color:#444;">Consignee (Ship to)</div>
+      <div style="padding:2px 8px 6px; border-bottom:1px solid #555;">
+        <div class="party-name">${escapeHtml(customerName)}</div>
+        <div>${escapeHtml(customerAddress)}</div>
+        <div class="gstin-line">GSTIN/UIN : </div>
+        <div class="gstin-line">State Name : Puducherry, Code : 34</div>
+      </div>
+      <div style="padding:3px 8px 0; font-size:10px; color:#444;">Buyer (Bill to)</div>
+      <div style="padding:2px 8px 6px;">
+        <div class="party-name">${escapeHtml(customerName)}</div>
+        <div>${escapeHtml(customerAddress)}</div>
+        <div class="gstin-line">GSTIN/UIN : </div>
+        <div class="gstin-line">State Name : Puducherry, Code : 34</div>
+      </div>
+    </div>
+    <div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; height:100%;">
+        <div style="padding:4px 8px; border-right:1px solid #555; border-bottom:1px solid #555; font-size:11px;"><div style="color:#555;font-size:10px;">Delivery Note</div></div>
+        <div style="padding:4px 8px; border-bottom:1px solid #555; font-size:11px;"><div style="color:#555;font-size:10px;">Mode/Terms of Payment</div></div>
+        <div style="padding:4px 8px; border-right:1px solid #555; border-bottom:1px solid #555; font-size:11px;"><div style="color:#555;font-size:10px;">Reference No. &amp; Date.</div></div>
+        <div style="padding:4px 8px; border-bottom:1px solid #555; font-size:11px;"><div style="color:#555;font-size:10px;">Other References</div></div>
+        <div style="padding:4px 8px; border-right:1px solid #555; border-bottom:1px solid #555; font-size:11px;"><div style="color:#555;font-size:10px;">Buyer's Order No.</div></div>
+        <div style="padding:4px 8px; border-bottom:1px solid #555; font-size:11px;"><div style="color:#555;font-size:10px;">Dated</div></div>
+        <div style="padding:4px 8px; border-right:1px solid #555; border-bottom:1px solid #555; font-size:11px;"><div style="color:#555;font-size:10px;">Dispatch Doc No.</div></div>
+        <div style="padding:4px 8px; border-bottom:1px solid #555; font-size:11px;"><div style="color:#555;font-size:10px;">Delivery Note Date</div></div>
+        <div style="padding:4px 8px; border-right:1px solid #555; border-bottom:1px solid #555; font-size:11px;"><div style="color:#555;font-size:10px;">Dispatched through</div></div>
+        <div style="padding:4px 8px; border-bottom:1px solid #555; font-size:11px;"><div style="color:#555;font-size:10px;">Destination</div></div>
+        <div style="padding:4px 8px; border-right:1px solid #555; border-bottom:1px solid #555; font-size:11px;"><div style="color:#555;font-size:10px;">Bill of Lading/LR-RR No.</div></div>
+        <div style="padding:4px 8px; border-bottom:1px solid #555; font-size:11px;"><div style="color:#555;font-size:10px;">Motor Vehicle No.</div><div style="font-weight:bold;">N/A</div></div>
+        <div style="padding:4px 8px; border-right:1px solid #555; font-size:11px; grid-column:1/3;"><div style="color:#555;font-size:10px;">Terms of Delivery</div></div>
+      </div>
+    </div>
+  </div>
+  <table class="items">
+    <thead>
+      <tr>
+        <th style="width:28px;">Sl<br>No.</th>
+        <th style="text-align:left;">Description of Goods</th>
+        <th>HSN/SAC</th>
+        <th>Quantity</th>
+        <th>Rate</th>
+        <th>per</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="center">1</td>
+        <td><span class="label-bold">${escapeHtml(product)}</span></td>
+        <td class="center">27111910</td>
+        <td class="center"><strong>${cylinders} No</strong></td>
+        <td class="right">${ratePerUnit.toFixed(2)}</td>
+        <td class="center">No</td>
+        <td class="right">${taxable.toFixed(2)}</td>
+      </tr>
+      <tr><td colspan="6" class="subtotal-label">Output SGST 9%</td><td class="subtotal-amount">${sgst.toFixed(2)}</td></tr>
+      <tr><td colspan="6" class="subtotal-label">Output CGST 9%</td><td class="subtotal-amount">${cgst.toFixed(2)}</td></tr>
+      <tr><td colspan="6" class="subtotal-label">Rounded Off</td><td class="subtotal-amount">${(total - (taxable + taxAmt)).toFixed(2)}</td></tr>
+      <tr class="total-row">
+        <td colspan="3" style="text-align:right;">Total</td>
+        <td class="center">${cylinders} No</td>
+        <td colspan="2"></td>
+        <td class="right">₹ ${total.toFixed(2)}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="words-row">
+    <div>
+      <span>Amount Chargeable (in words)</span><br>
+      <span class="words-bold">INR ${numberToWords(Math.round(total))} Only</span>
+    </div>
+    <div class="eoe">E. &amp; O.E</div>
+  </div>
+  <table class="tax-summary">
+    <thead>
+      <tr>
+        <th rowspan="2">HSN/SAC</th><th rowspan="2">Taxable<br>Value</th><th colspan="2">CGST</th><th colspan="2">SGST/UTGST</th><th rowspan="2">Total<br>Tax Amount</th>
+      </tr>
+      <tr><th>Rate</th><th>Amount</th><th>Rate</th><th>Amount</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="left">27111910</td><td>${taxable.toFixed(2)}</td><td>9%</td><td>${cgst.toFixed(2)}</td><td>9%</td><td>${sgst.toFixed(2)}</td><td>${taxAmt.toFixed(2)}</td>
+      </tr>
+      <tr class="total-row">
+        <td class="left">Total</td><td>${taxable.toFixed(2)}</td><td></td><td>${cgst.toFixed(2)}</td><td></td><td>${sgst.toFixed(2)}</td><td>${taxAmt.toFixed(2)}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tax-words">
+    Tax Amount (in words) : <span>INR ${numberToWords(Math.floor(taxAmt))} and ${numberToWords(Math.round((taxAmt % 1) * 100))} paise Only</span>
+  </div>
+  <div class="footer">
+    <div class="decl">
+      <div class="decl-label">Declaration</div>
+      <div>We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.</div>
+    </div>
+    <div class="sign">
+      <div class="sign-name">for SIVAGNANAM TRADERS</div>
+      <div class="auth">Authorised Signatory</div>
+    </div>
+  </div>
+  <div class="computer-gen">This is a Computer Generated Invoice</div>
+  <div class="no-print" style="text-align: center; margin-top: 20px;">
+    <button onclick="window.print()" style="padding: 10px 20px; font-size: 14px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 5px;">Print Bill</button>
+    <button onclick="window.close()" style="padding: 10px 20px; font-size: 14px; cursor: pointer; background: #6c757d; color: white; border: none; border-radius: 5px; margin-left: 10px;">Close</button>
+  </div>
+</div>
+</body>
+</html>`);
+          w.document.close();
+      nextQuickBillInvoiceNumber += 1;
+      qbInvoiceInput.value = nextQuickBillInvoiceNumber;
+      };
+
+      if (saleCancelBtn) {
+        saleCancelBtn.addEventListener('click', () => {
+          salesForm.reset();
+          setSalesDateToday();
+          editingSaleIndex = -1;
+          saleSubmitBtn.textContent = 'Add Sale';
+          saleCancelBtn.style.display = 'none';
+          saleCustDetails.style.display = 'none';
+          saleStockDetails.style.display = 'none';
+        });
+      }
+
+      if (salesForm) {
+        salesForm.addEventListener('submit', e => {
+          e.preventDefault();
+
+          // Disable button to prevent multiple submissions
+          saleSubmitBtn.disabled = true;
+
+          // Stock check for NEW sales
+          if (editingSaleIndex === -1) {
+            const saleQty = Number(salesForm.cylinders.value);
+            const saleType = salesForm.cylinderType.value;
+
+            // Allow 0 qty if there is payment or return (e.g. balance payment)
+            const sPay = Number(salesForm.paid.value);
+            const sRet = Number(salesForm.returnCyl.value);
+            if (saleQty <= 0 && sPay <= 0 && sRet <= 0) {
+                showToast('Please enter Quantity, Return, or Payment.', '#d9534f');
+                saleSubmitBtn.disabled = false;
+                return;
+            }
+
+            const availableStock = getAvailableStock(saleType);
+            if (saleQty > 0 && saleQty > availableStock) {
+              showToast(`Not enough stock! Only ${availableStock} available.`, '#d9534f');
+              saleSubmitBtn.disabled = false;
+              return; // Stop the submission
+            }
+          }
+          const custName = saleCustomerSelect.value;
+          const isValidCustomer = customers.some(c => c.name === custName);
+          if (!custName || !isValidCustomer) {
+            showToast('Please select a valid customer from the list.', '#d9534f');
+            saleSubmitBtn.disabled = false;
+            return;
+          }
+
+          const data = {
+            date: salesForm.date.value,
+            customerName: custName,
+            cylinderType: saleCylinderSelect.value,
+            cylinders: salesForm.cylinders.value,
+            price: salesForm.price.value,
+            total: salesForm.total.value,
+            paid: salesForm.paid.value,
+            balance: salesForm.balance.value,
+            returnCyl: salesForm.returnCyl.value,
+            taxType: salesForm.taxType.value
+          };
+          
+          const apiData = {
+            date: data.date, customer_name: data.customerName, cylinder_type: data.cylinderType, tax_type: data.taxType,
+            cylinders: data.cylinders, return_cyl: data.returnCyl, price: data.price,
+            total: data.total, paid: data.paid, balance: data.balance
+          };
+          const saleDone = () => {
+            renderSales(); renderCustomers();
+            if(window.renderSalesReturns) window.renderSalesReturns();
+            if(window.renderTally) window.renderTally();
+            salesForm.reset(); setSalesDateToday();
+            saleCustDetails.style.display='none'; saleStockDetails.style.display='none';
+            saleSubmitBtn.disabled=false;
+          };
+          if (editingSaleIndex === -1) {
+            fetch('/api/sales',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(apiData)})
+              .then(r=>r.json()).then(row=>{ sales.push({...data,id:row.id}); showPopup('Success!','Sale added successfully!'); saleDone(); });
+          } else {
+            const sid = sales[editingSaleIndex].id;
+            fetch('/api/sales/'+sid,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(apiData)})
+              .then(r=>r.json()).then(()=>{
+                sales[editingSaleIndex]={...data,id:sid};
+                editingSaleIndex=-1; saleSubmitBtn.textContent='Add Sale'; saleCancelBtn.style.display='none';
+                showPopup('Success!','Sale updated successfully!'); saleDone();
+              });
+          }
+        });
+      }
+
+      // --- Return/Empty Cylinder Logic ---
+      const returnForm = document.getElementById('returnForm');
+      const returnTableBody = document.querySelector('#returnTable tbody');
+      
+      function renderReturns() {
+        if (!returnTableBody) return;
+        returnTableBody.innerHTML = '';
+        if (stockReturns.length === 0) {
+          returnTableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#666">No returns added yet</td></tr>';
+          return;
+        }
+        stockReturns.forEach((r, index) => {
+           const tr = document.createElement('tr');
+           tr.innerHTML = `<td>${formatDate(r.date)}</td><td>${escapeHtml(r.customerName)}</td><td>${escapeHtml(r.type)}</td><td>${r.qty}</td><td><button class="action-btn delete-btn" onclick="deleteReturn(${index})">Delete</button></td>`;
+           returnTableBody.appendChild(tr);
+        });
+      }
+
+      window.deleteReturn = (index) => {
+        if(confirm('Delete this return entry?')) {
+          const rid = stockReturns[index].id;
+          fetch('/api/stock-returns/'+rid,{method:'DELETE'}).then(()=>{
+            stockReturns.splice(index,1); renderReturns(); renderCustomers();
+            if(window.renderSalesReturns) window.renderSalesReturns();
+            if(window.renderTally) window.renderTally();
+            showToast('Return deleted','#d9534f');
+          });
+        }
+      };
+
+      if (returnForm) {
+          returnForm.addEventListener('submit', (e) => {
+              e.preventDefault();
+              const data = {
+                  date: returnForm.date.value,
+                  customerName: returnForm.customer.value,
+                  type: returnForm.type.value,
+                  qty: Number(returnForm.qty.value)
+              };
+              fetch('/api/stock-returns',{method:'POST',headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({date:data.date,customer_name:data.customerName,cylinder_type:data.type,qty:data.qty})})
+                .then(r=>r.json()).then(row=>{
+                  stockReturns.push({...data,id:row.id}); renderReturns(); renderCustomers();
+                  if(window.renderTally) window.renderTally();
+                  showToast('Return added','#74ebd5');
+                  if(window.renderSalesReturns) window.renderSalesReturns();
+                  returnForm.reset();
+                });
+          });
+      }
+
+      // --- Entry Details / Day Book Logic ---
+      window.renderEntryDetails = () => {
+        const filterDate = document.getElementById('entryDateFilter').value;
+        const tbody = document.querySelector('#entryDetailsTable tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        let rawEntries = [];
+
+        // 1. Sales Only
+        sales.forEach(s => {
+          rawEntries.push({
+            date: s.date,
+            category: 'Sale',
+            name: s.customerName,
+            details: `Sale ${s.cylinderType} x ${s.cylinders}`,
+            balance: parseFloat(s.balance) || 0,
+            returnEmpty: parseFloat(s.returnCyl) || 0,
+            sortDate: new Date(s.date)
+          });
+        });
+
+        // Filter
+        if (filterDate) {
+          rawEntries = rawEntries.filter(e => e.date === filterDate);
+        }
+
+        // Combine entries by Date + Name
+        let grouped = {};
+        rawEntries.forEach(e => {
+          const key = `${e.date}_${e.name}`;
+          if (!grouped[key]) {
+            grouped[key] = {
+              date: e.date,
+              name: e.name,
+              categories: [e.category],
+              details: [e.details],
+              balance: e.balance,
+              returnEmpty: e.returnEmpty,
+              sortDate: e.sortDate
+            };
+          } else {
+            if (!grouped[key].categories.includes(e.category)) grouped[key].categories.push(e.category);
+            grouped[key].details.push(e.details);
+            grouped[key].balance += e.balance;
+            grouped[key].returnEmpty += e.returnEmpty;
+          }
+        });
+
+        let allEntries = Object.values(grouped);
+        
+        // Sort descending
+        allEntries.sort((a, b) => b.sortDate - a.sortDate);
+
+        if (allEntries.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No entries found</td></tr>';
+          return;
+        }
+
+        allEntries.forEach(e => {
+          const tr = document.createElement('tr');
+          
+          let color = '#333';
+          if (e.categories.length === 1) {
+             const cat = e.categories[0];
+             color = cat === 'Sale' ? 'green' : (cat === 'Stock' ? 'blue' : (cat === 'Return' ? 'orange' : '#333'));
+          } else {
+             color = '#5a67d8'; // Mixed
+          }
+
+          const customerObj = customers.find(c => c.name === e.name);
+          const phone = customerObj ? customerObj.phone : '-';
+          const address = customerObj ? customerObj.address : '-';
+          const balText = e.balance !== 0 ? e.balance.toFixed(2) : '-';
+          const emptyText = e.returnEmpty !== 0 ? e.returnEmpty : '-';
+
+          tr.innerHTML = `<td>${formatDate(e.date)}</td><td>${escapeHtml(e.name)}</td><td>${escapeHtml(phone)}</td><td>${escapeHtml(address)}</td><td>${balText}</td><td>${emptyText}</td>`;
+          tbody.appendChild(tr);
+        });
+      };
+      const entryDateFilter = document.getElementById('entryDateFilter');
+      if (entryDateFilter) {
+        entryDateFilter.addEventListener('change', window.renderEntryDetails);
+      }
+
+      // Initial calls
+      updateSalesDropdowns();
+      setSalesDateToday();
+      renderStocks();
+      // Define Cylinder Returns Render Function
+      window.renderSalesReturns = function() {
+        const filterCust = document.getElementById('ledgerCustomerFilter') ? document.getElementById('ledgerCustomerFilter').value : '';
+        const filterDate = document.getElementById('ledgerDateFilter') ? document.getElementById('ledgerDateFilter').value : '';
+        const tbody = document.querySelector('#salesReturnsTable tbody');
+        const thead = document.querySelector('#salesReturnsTable thead tr');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        if (thead) {
+            thead.innerHTML = filterCust 
+                ? '<th>Date</th><th>Customer</th><th>Full (Out)</th><th>Empty (In)</th><th>Balance</th><th>Status (Advance/Future)</th>'
+                : '<th>Date</th><th>Customer</th><th>Full (Out)</th><th>Empty (In)</th><th>Balance</th>';
+        }
+
+        let combined = [];
+        // Add Sales records
+        sales.forEach(s => {
+          combined.push({
+            date: s.date,
+            customer: s.customerName,
+            full: Number(s.cylinders) || 0,
+            empty: Number(s.returnCyl) || 0
+          });
+        });
+        
+        // Add Manual Return records
+        stockReturns.forEach(r => {
+           combined.push({
+             date: r.date,
+             customer: r.customerName,
+             full: 0,
+             empty: Number(r.qty) || 0
+           });
+        });
+
+        // Filter by Customer First (to calculate running balance correctly for that customer)
+        if (filterCust) {
+            combined = combined.filter(i => i.customer.toLowerCase().includes(filterCust.toLowerCase()));
+        }
+
+        // Sort Oldest to Newest for Calculation
+        combined.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        // Calculate Running Balance
+        let runningBalance = 0;
+        const rows = combined.map(item => {
+            const netChange = item.full - item.empty;
+            runningBalance += netChange;
+            return { ...item, netChange, runningBalance };
+        });
+
+        // Filter by Date (after calc)
+        let displayRows = rows;
+        if (filterDate) {
+            displayRows = displayRows.filter(i => i.date === filterDate);
+        }
+
+        // Sort Newest to Oldest for Display
+        displayRows.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        if (displayRows.length === 0) {
+           const colSpan = filterCust ? 6 : 5;
+           tbody.innerHTML = `<tr><td colspan="${colSpan}" style="text-align:center;">No records found</td></tr>`;
+           return;
+        }
+
+        displayRows.forEach(item => {
+           const balance = item.netChange;
+           const color = balance > 0 ? '#d9534f' : (balance < 0 ? '#28a745' : '#333');
+           const tr = document.createElement('tr');
+           
+           let html = `<td>${formatDate(item.date)}</td><td>${escapeHtml(item.customer)}</td><td>${item.full}</td><td>${item.empty}</td><td style="color:${color}; font-weight:bold;">${balance > 0 ? '+' + balance : balance}</td>`;
+           
+           if (filterCust) {
+               const rb = item.runningBalance;
+               const rbColor = rb > 0 ? '#d9534f' : (rb < 0 ? '#28a745' : '#333');
+               const status = rb > 0 ? 'Pending' : (rb < 0 ? 'Advance' : 'Clear');
+               html += `<td style="color:${rbColor}; font-weight:bold;">${rb} (${status})</td>`;
+           }
+
+           tr.innerHTML = html;
+           tbody.appendChild(tr);
+        });
+      };
+
+      window.printEntryDetail = (date, name) => {
+        const details = [];
+        sales.filter(s => s.date === date && s.customerName === name).forEach(s => details.push({ type: 'Sale', desc: `${s.cylinderType} x ${s.cylinders}`, amount: s.total, balance: s.balance }));
+        if (name === 'Stock Purchase') {
+          stocks.filter(s => s.date === date).forEach(s => details.push({ type: 'Purchase', desc: `${s.type} (Qty: ${s.qty})`, amount: (s.qty * s.price).toFixed(2), balance: '-' }));
+        }
+        stockReturns.filter(r => r.date === date && r.customerName === name).forEach(r => details.push({ type: 'Return', desc: `Empty Return: ${r.type} (${r.qty})`, amount: '-', balance: '-' }));
+        customers.filter(c => c.date === date && c.name === name).forEach(c => details.push({ type: 'New Customer', desc: `Registration`, amount: '-', balance: '-' }));
+
+        const content = `
+            <div style="font-family: sans-serif; padding: 20px; background: white;">
+              <h2 style="border-bottom: 2px solid #333; padding-bottom: 10px; margin-top: 0;">Entry Details</h2>
+              <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+              <p><strong>Date:</strong> ${date.split('-').reverse().join('-')}</p>
+              <p><strong>Time:</strong> ${new Date().toLocaleTimeString()}</p>
+              <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                <thead>
+                  <tr style="background-color: #f2f2f2;">
+                    <th style="border: 1px solid #ddd; padding: 10px; text-align: left;">Type</th>
+                    <th style="border: 1px solid #ddd; padding: 10px; text-align: left;">Description</th>
+                    <th style="border: 1px solid #ddd; padding: 10px; text-align: left;">Amount</th>
+                    <th style="border: 1px solid #ddd; padding: 10px; text-align: left;">Balance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${details.map(d => `
+                    <tr>
+                      <td style="border: 1px solid #ddd; padding: 10px;">${d.type}</td>
+                      <td style="border: 1px solid #ddd; padding: 10px;">${d.desc}</td>
+                      <td style="border: 1px solid #ddd; padding: 10px;">${d.amount}</td>
+                      <td style="border: 1px solid #ddd; padding: 10px;">${d.balance}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+        `;
+
+        const printArea = document.getElementById('printableArea');
+        if (printArea) {
+          printArea.innerHTML = content;
+          window.print();
+        }
+      };
+
+      window.printAllEntries = () => {
+        const table = document.getElementById('entryDetailsTable');
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+        
+        if (rows.length === 0 || (rows.length === 1 && rows[0].innerText.includes('No entries found'))) {
+            alert('No entries to print');
+            return;
+        }
+
+        const cellStyle = "padding: 8px 5px; border-bottom: 1px solid #000; color: #000;";
+        const rightAlign = "text-align: right;";
+        let tableRows = '';
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length >= 6) {
+                 tableRows += `
+                     <tr>
+                         <td style="${cellStyle}">${cells[0].innerText}</td>
+                         <td style="${cellStyle}">${cells[1].innerText}</td>
+                         <td style="${cellStyle}">${cells[2].innerText}</td>
+                         <td style="${cellStyle}">${cells[3].innerText}</td>
+                         <td style="${cellStyle} ${rightAlign}">${cells[4].innerText}</td>
+                         <td style="${cellStyle} ${rightAlign}">${cells[5].innerText}</td>
+                     </tr>
+                 `;
+            }
+        });
+
+        const content = `
+            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; color: #000;">
+              <div style="text-align: center; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px;">
+                <h2 style="margin: 0; font-size: 22px; text-transform: uppercase;">SIVAGNANAM TRADERS</h2>
+                <h4 style="margin: 5px 0 0; font-weight: normal; color: #444;">Customer Report Log</h4>
+                <p style="margin: 5px 0 0; font-size: 11px; color: #666;">Generated: ${new Date().toLocaleString()}</p>
+              </div>
+              <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <thead>
+                  <tr style="background-color: #f0f0f0;">
+                    <th style="padding: 10px 5px; text-align: left; font-weight: bold; border-bottom: 1px solid #ccc;">Date</th>
+                    <th style="padding: 10px 5px; text-align: left; font-weight: bold; border-bottom: 1px solid #ccc;">Name</th>
+                    <th style="padding: 10px 5px; text-align: left; font-weight: bold; border-bottom: 1px solid #ccc;">Phone</th>
+                    <th style="padding: 10px 5px; text-align: left; font-weight: bold; border-bottom: 1px solid #ccc;">Address</th>
+                    <th style="padding: 10px 5px; text-align: right; font-weight: bold; border-bottom: 1px solid #ccc;">Balance Amt</th>
+                    <th style="padding: 10px 5px; text-align: right; font-weight: bold; border-bottom: 1px solid #ccc;">Balance Empty</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${tableRows}
+                </tbody>
+              </table>
+              <div style="margin-top: 20px; text-align: right; font-size: 11px; color: #666;">
+                <p>Authorized Signature</p>
+              </div>
+            </div>
+        `;
+
+        const printArea = document.getElementById('printableArea');
+        if (printArea) {
+          printArea.innerHTML = content;
+          window.print();
+        }
+      };
+
+      // Load all data from PostgreSQL via API, then render everything
+      Promise.all([
+        ...['/api/stocks', '/api/customers', '/api/sales', '/api/stock-returns', '/api/expenses'].map(async endpoint => {
+          const response = await fetch(endpoint);
+          const body = await response.json();
+          if (!response.ok) throw new Error(body.error || `${endpoint} failed (${response.status})`);
+          return body;
+        })
+      ]).then(([s, c, sa, sr, expenses]) => {
+        stocks       = s.map(row => ({ id:row.id, date:row.date ? row.date.split('T')[0] : '', type:row.type, qty:Number(row.qty), price:Number(row.price), mrp:Number(row.mrp) }));
+        customers    = c.map(row => ({ id:row.id, date:row.date ? row.date.split('T')[0] : '', name:row.name, phone:row.phone, address:row.address, gstin:row.gstin, deposit:row.deposit, old_balance:Number(row.old_balance) || 0 }));
+        sales        = sa.map(row => ({ id:row.id, date:row.date ? row.date.split('T')[0] : '', customerName:row.customer_name, cylinderType:row.cylinder_type, taxType:row.tax_type || 'cgsg', cylinders:Number(row.cylinders), returnCyl:Number(row.return_cyl), price:Number(row.price), total:Number(row.total), paid:Number(row.paid), balance:Number(row.balance) }));
+        stockReturns = sr.map(row => ({ id:row.id, date:row.date ? row.date.split('T')[0] : '', customerName:row.customer_name, type:row.cylinder_type, qty:Number(row.qty) }));
+        expenseEntries = expenses.map(mapExpenseRow);
+        updateExpenseCategoryFilter();
+        renderExpenseDashboard();
+        renderStocks();
+        renderSales();
+        renderCustomers();
+        renderReturns();
+        updateSalesDropdowns();
+        if(window.renderSalesReturns) window.renderSalesReturns();
+        if(window.renderTally) window.renderTally();
+      }).catch(err => {
+        console.error('Failed to load data:', err);
+        showPopup('Database error', `Saved data could not be loaded: ${err.message}`);
+      });
+
+      // --- Monthly Report Logic ---
+      // Filters sales by month and calculates totals
+      const reportMonthPicker = document.getElementById('reportMonthPicker');
+      const btnLoadReport = document.getElementById('btnLoadReport');
+      const btnPrevMonth = document.getElementById('btnPrevMonth');
+      const reportTableBody = document.querySelector('#sellingReportTable tbody');
+      const reportSummary = document.getElementById('reportSummary');
+
+      // Set default month to current
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      if(reportMonthPicker) reportMonthPicker.value = `${yyyy}-${mm}`;
+
+      function renderMonthlyReport() {
+        if (!reportTableBody) return;
+        const selectedMonth = reportMonthPicker.value; // YYYY-MM
+        if (!selectedMonth) return;
+
+        const filteredSales = sales.filter(s => s.date.startsWith(selectedMonth));
+        
+        const totalQty = filteredSales.reduce((sum, s) => sum + (parseFloat(s.cylinders) || 0), 0);
+        const totalRevenue = filteredSales.reduce((sum, s) => sum + (parseFloat(s.total) || 0), 0);
+        
+        reportSummary.innerHTML = `Total Sales: ${filteredSales.length} | Cylinders: ${totalQty} | Revenue: ${totalRevenue.toFixed(2)}`;
+
+        reportTableBody.innerHTML = '';
+        if (filteredSales.length === 0) {
+          reportTableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No sales found for this month</td></tr>';
+          return;
+        }
+
+        filteredSales.forEach(s => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${formatDate(s.date)}</td><td>${escapeHtml(s.customerName)}</td><td>${escapeHtml(s.cylinderType || '-')}</td><td>${s.cylinders}</td><td>${s.price}</td><td>${s.total}</td>`;
+          reportTableBody.appendChild(tr);
+        });
+      }
+
+      if (btnLoadReport) btnLoadReport.addEventListener('click', renderMonthlyReport);
+      if (btnPrevMonth) {
+        btnPrevMonth.addEventListener('click', () => {
+          if (reportMonthPicker.value) {
+            const d = new Date(reportMonthPicker.value + '-01');
+            d.setMonth(d.getMonth() - 1);
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            reportMonthPicker.value = `${y}-${m}`;
+            renderMonthlyReport();
+          }
+        });
+      }
+
+      // --- Stock Tally Logic ---
+      window.renderTally = function() {
+        const tbody = document.querySelector('#tallyTable tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        
+        const types = new Set([
+            ...stocks.map(s => s.type), 
+            ...sales.map(s => s.cylinderType), 
+            ...stockReturns.map(r => r.type)
+        ]);
+        const uniqueTypes = [...types].filter(t => t);
+        
+        if (uniqueTypes.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No data available</td></tr>';
+            return;
+        }
+
+        uniqueTypes.forEach(type => {
+            const boughtFull = stocks.filter(s => s.type === type).reduce((sum, s) => sum + (Number(s.qty) || 0), 0);
+            const soldFull = sales.filter(s => s.cylinderType === type).reduce((sum, s) => sum + (Number(s.cylinders) || 0), 0);
+            const currentFull = boughtFull - soldFull;
+            
+            const returnedSales = sales.filter(s => s.cylinderType === type).reduce((sum, s) => sum + (Number(s.returnCyl) || 0), 0);
+            const returnedGodown = stockReturns.filter(r => r.type === type).reduce((sum, r) => sum + (Number(r.qty) || 0), 0);
+            const totalEmpty = returnedSales + returnedGodown;
+            
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${escapeHtml(type)}</td><td>${boughtFull}</td><td>${soldFull}</td><td style="font-weight:bold; color:${currentFull < 5 ? 'red' : 'green'}">${currentFull}</td><td style="font-weight:bold;">${totalEmpty}</td>`;
+            tbody.appendChild(tr);
+        });
+      };
+      window.renderTally();
+
+      // small helper to show a toast message
+      function showToast(text, bg) {
+        const msg = document.createElement('div');
+        msg.textContent = text;
+        msg.style.position = 'fixed';
+        msg.style.top = '20px';
+        msg.style.right = '20px';
+        msg.style.background = bg || '#74ebd5';
+        msg.style.color = '#333';
+        msg.style.padding = '12px 20px';
+        msg.style.borderRadius = '8px';
+        msg.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+        msg.style.opacity = '0';
+        msg.style.transition = 'opacity 0.5s ease';
+        document.body.appendChild(msg);
+        requestAnimationFrame(() => {
+          msg.style.opacity = '1';
+        });
+        setTimeout(() => {
+          msg.style.opacity = '0';
+          msg.addEventListener('transitionend', () => msg.remove());
+        }, 2000);
+      }
+
+      // escape simple HTML for table output
+      // Replaces special characters to prevent HTML injection
+      function escapeHtml(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      // --- Backup & Restore Logic ---
+      window.backupData = function() {
+        fetch('/api/backup').then(r=>r.json()).then(data=>{
+          const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'sivagnanam_traders_backup_' + new Date().toISOString().split('T')[0] + '.json';
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        });
+      };
+
+      window.restoreData = function(input) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            const data = JSON.parse(e.target.result);
+            alert('Restore from backup is disabled in PostgreSQL mode.\nPlease use psql to restore your SQL backup.');
+          } catch (err) { alert('Error parsing backup file.'); }
+        };
+        reader.readAsText(file);
+      };
+
+      // Enter key navigation: focus next input instead of submit
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const target = e.target;
+          if ((target.tagName === 'INPUT' || target.tagName === 'SELECT') && !target.type.match(/submit|button|reset|file/)) {
+            const form = target.form;
+            if (form) {
+              e.preventDefault();
+              const els = Array.from(form.elements).filter(el => !el.disabled && !el.readOnly && !el.hidden && el.offsetParent !== null && (el.tagName === 'INPUT' || el.tagName === 'SELECT' || el.tagName === 'TEXTAREA' || (el.tagName === 'BUTTON' && el.type === 'submit')));
+              const index = els.indexOf(target);
+              if (index > -1 && index < els.length - 1) els[index + 1].focus();
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>  

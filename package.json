@@ -6,6 +6,7 @@
   "scripts": {
     "start": "electron .",
     "app": "electron .",
+    "start:web": "node server.js",
     "build-exe": "electron-packager . SivaTraders --platform=win32 --arch=x64 --overwrite --icon=logo.ico"
   },
   "dependencies": {

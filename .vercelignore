@@ -1,0 +1,9 @@
+node_modules/
+SivaTraders-win32-x64/
+dist/
+out/
+.vercel/
+.env
+.env.*
+!.env.example
+*.log

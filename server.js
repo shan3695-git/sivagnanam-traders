@@ -261,23 +261,37 @@ app.get('/api/backup', async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+let databaseInitialization;
+
+function initializeDatabase() {
+  if (!databaseInitialization) {
+    databaseInitialization = (async () => {
+      await pool.query('SELECT 1');
+      await pool.query('ALTER TABLE customers ADD COLUMN IF NOT EXISTS old_balance NUMERIC NOT NULL DEFAULT 0');
+      await pool.query("ALTER TABLE sales ADD COLUMN IF NOT EXISTS tax_type VARCHAR(10) NOT NULL DEFAULT 'cgsg'");
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS expenses (
+          id             SERIAL PRIMARY KEY,
+          title          VARCHAR(200) NOT NULL,
+          category       VARCHAR(100) NOT NULL,
+          amount         NUMERIC(12, 2) NOT NULL CHECK (amount > 0),
+          date           DATE NOT NULL,
+          payment_method VARCHAR(100) NOT NULL DEFAULT 'Cash',
+          description    TEXT NOT NULL DEFAULT '',
+          created_at     TIMESTAMP NOT NULL DEFAULT NOW()
+        )
+      `);
+      await pool.query('CREATE INDEX IF NOT EXISTS expenses_date_id_idx ON expenses (date DESC, id DESC)');
+    })().catch((error) => {
+      databaseInitialization = undefined;
+      throw error;
+    });
+  }
+  return databaseInitialization;
+}
+
 async function startServer() {
-  await pool.query('SELECT 1');
-  await pool.query('ALTER TABLE customers ADD COLUMN IF NOT EXISTS old_balance NUMERIC NOT NULL DEFAULT 0');
-  await pool.query("ALTER TABLE sales ADD COLUMN IF NOT EXISTS tax_type VARCHAR(10) NOT NULL DEFAULT 'cgsg'");
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS expenses (
-      id             SERIAL PRIMARY KEY,
-      title          VARCHAR(200) NOT NULL,
-      category       VARCHAR(100) NOT NULL,
-      amount         NUMERIC(12, 2) NOT NULL CHECK (amount > 0),
-      date           DATE NOT NULL,
-      payment_method VARCHAR(100) NOT NULL DEFAULT 'Cash',
-      description    TEXT NOT NULL DEFAULT '',
-      created_at     TIMESTAMP NOT NULL DEFAULT NOW()
-    )
-  `);
-  await pool.query('CREATE INDEX IF NOT EXISTS expenses_date_id_idx ON expenses (date DESC, id DESC)');
+  await initializeDatabase();
 
   return new Promise((resolve, reject) => {
     const server = app.listen(PORT, () => {
@@ -287,6 +301,9 @@ async function startServer() {
     server.once('error', reject);
   });
 }
+
+startServer.app = app;
+startServer.initializeDatabase = initializeDatabase;
 
 if (require.main === module) {
   startServer().catch((err) => {
